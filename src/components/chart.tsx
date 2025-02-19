@@ -106,7 +106,7 @@ const data: Player[] = [
         name: "Infiltrator's Shroud",
       },
       {
-        id: 226810,
+        id: 226810, 
         main: false,
         name: "Infiltrator's Shroud",
       },
