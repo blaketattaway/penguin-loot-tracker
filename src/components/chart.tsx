@@ -2,7 +2,9 @@ import {
   Bar,
   BarChart,
   Cell,
+  Rectangle,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
@@ -106,7 +108,7 @@ const data: Player[] = [
         name: "Infiltrator's Shroud",
       },
       {
-        id: 226810, 
+        id: 226810,
         main: false,
         name: "Infiltrator's Shroud",
       },
@@ -148,19 +150,70 @@ const Chart: React.FC = () => {
 
   return (
     <>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart width={150} height={40} data={data}>
-          <Bar dataKey="totalLoot" fill="#4a8eb3">
+      <ResponsiveContainer
+        width="100%"
+        height="100%"
+        style={{ color: "white" }}
+      >
+        <BarChart layout="vertical" width={150} height={40} data={data}>
+          <Tooltip
+            cursor={{
+              fill: "transparent",
+            }}
+            wrapperStyle={{
+              backgroundColor: "transparent",
+              border: "none",
+              boxShadow: "none",
+            }}
+            content={({ active, payload }) => {
+              if (active && payload && payload.length && payload[0].value > 0) {
+                return (
+                  <div
+                    style={{
+                      backgroundColor: "black",
+                      color: "white",
+                      padding: "5px 10px",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    <strong>{payload[0].payload.name}</strong> <br />
+                    <strong>Total Loot:</strong> {payload[0].value}
+                  </div>
+                );
+              }
+              return null;
+            }}
+          />
+          <Bar dataKey="totalLoot" activeBar={<Rectangle fill="#dbe4d0" />}>
             {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
-                fill="#4a8eb3"
+                fill="#87ceeb"
+                onMouseOver={(
+                  e: React.MouseEvent<SVGRectElement, MouseEvent>
+                ) => {
+                  if (entry.totalLoot > 0)
+                    e.currentTarget.style.fill = "#f4a261";
+                }}
+                onMouseOut={(
+                  e: React.MouseEvent<SVGRectElement, MouseEvent>
+                ) => {
+                  if (entry.totalLoot > 0)
+                    e.currentTarget.style.fill = "#87ceeb";
+                }}
                 onClick={() => handleBarClick(entry)}
               />
             ))}
           </Bar>
-          <XAxis dataKey="name" />
-          <YAxis />
+          <YAxis
+            type="category"
+            dataKey="name"
+            tick={{ fill: "white" }}
+            tickLine={false}
+            textAnchor="end"
+            width={150}
+          />
+          <XAxis type="number" allowDecimals={false} tick={{ fill: "white" }} />
         </BarChart>
       </ResponsiveContainer>
       <LootModal selectedPlayer={selectedPlayer} />
