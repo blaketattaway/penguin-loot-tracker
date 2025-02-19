@@ -166,20 +166,24 @@ const Chart: React.FC = () => {
               boxShadow: "none",
             }}
             content={({ active, payload }) => {
-              if (active && payload && payload.length && payload[0].value > 0) {
-                return (
-                  <div
-                    style={{
-                      backgroundColor: "black",
-                      color: "white",
-                      padding: "5px 10px",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    <strong>{payload[0].payload.name}</strong> <br />
-                    <strong>Total Loot:</strong> {payload[0].value}
-                  </div>
-                );
+              if (active && payload && payload.length > 0) {
+                const lootValue = Number(payload[0].value);
+                
+                if (lootValue > 0) {
+                  return (
+                    <div
+                      style={{
+                        backgroundColor: "black",
+                        color: "white",
+                        padding: "5px 10px",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      <strong>{payload[0].payload.name}</strong> <br />
+                      <strong>Total Loot:</strong> {payload[0].value}
+                    </div>
+                  );
+                }
               }
               return null;
             }}
