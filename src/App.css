@@ -1,0 +1,109 @@
+:root {
+  --background: #241b2f;
+  --text: #e3e0d9;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 2. Establecer un comportamiento base para el HTML */
+html {
+  font-size: 16px;
+  line-height: 1.5;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* 3. Configuración del cuerpo del documento */
+body {
+  font-family: "Nunito", sans-serif;
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  background-color: var(--background);
+  color: var(--text);
+}
+
+/* 4. Normalización de encabezados */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2;
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
+}
+
+/* 5. Imágenes y multimedia responsivo */
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 6. Normalizar listas */
+ul, ol {
+  list-style: none;
+}
+
+/* 7. Enlaces sin decoración por defecto */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* 8. Botones y formularios */
+button, input, select, textarea {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+input, textarea {
+  outline: none;
+}
+
+/* 9. Quitar estilos extra en tablas */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+td, th {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+/* 10. Normalización de desplazamiento en dispositivos táctiles */
+html, body {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: none;
+}
+
+/* 11. Manejo de elementos ocultos */
+[hidden] {
+  display: none !important;
+}
+
+/* 12. Mejoras de accesibilidad */
+:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+p {
+  font-family: "Nunito", sans-serif;
+  font-weight: 400; /* Regular */
+}
+
+.loot-list li::before {
+  content: "★"; 
+  color: gold;
+  font-size: 1.2em;
+  margin-right: 8px;
+}
