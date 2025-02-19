@@ -1,9 +1,9 @@
 {
   "name": "penguin-loot-tracker",
+  "homepage": "https://blaketattaway.github.io/penguin-loot-tracker/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://blaketattaway.github.io/penguin-loot-tracker",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
