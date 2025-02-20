@@ -1,7 +1,8 @@
 import "./App.css";
 import Chart from "./components/chart";
 import githubImage from "./assets/github-mark-white.svg";
-import { Route, Routes } from "react-router-dom";
+import { NavLink, Route, Routes } from "react-router-dom";
+import PriorityTracker from "./components/prioritytracker";
 
 const APP_NAME: string = "Penguin Loot Tracker";
 
@@ -10,7 +11,12 @@ function App() {
     <>
       <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
         <div className="container">
-          <div className="navbar-brand">{APP_NAME}</div>
+          <NavLink
+            to="/penguin-loot-tracker"
+            className="navbar-brand"
+          >
+            {APP_NAME}
+          </NavLink>
           <button
             className="navbar-toggler"
             type="button"
@@ -19,6 +25,12 @@ function App() {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
+          <NavLink
+            to="/penguin-loot-tracker/priority-tracker"
+            className="nav-link ms-3 priority-link"
+          >
+            Priority Tracker
+          </NavLink>
           <div className="collapse navbar-collapse" id="navbarNav">
             <div className="navbar-nav ms-auto d-flex align-items-center">
               <img src={githubImage} alt="github-image" className="nav-logo" />
@@ -38,7 +50,10 @@ function App() {
           <div className="col-md-12" style={{ height: "70vh" }}>
             <Routes>
               <Route path="/penguin-loot-tracker" element={<Chart />} />
-              <Route path="penguin-loot-tracker/priority-tracker" element={<Chart />} />
+              <Route
+                path="/penguin-loot-tracker/priority-tracker"
+                element={<PriorityTracker />}
+              />
               <Route path="*" element={<Chart />} />
             </Routes>
           </div>
