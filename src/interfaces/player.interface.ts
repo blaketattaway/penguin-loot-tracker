@@ -8,3 +8,8 @@ export interface Item {
     main: boolean;
     name: string;
 }
+
+export interface PriorityEntry {
+    players: string[];
+    priority: number;
+}
