@@ -3,6 +3,7 @@ import Chart from "./components/chart";
 import githubImage from "./assets/github-mark-white.svg";
 import { NavLink, Route, Routes } from "react-router-dom";
 import PriorityTracker from "./components/prioritytracker";
+import ItemSearcher from "./components/itemsearcher";
 
 const APP_NAME: string = "Penguin Loot Tracker";
 
@@ -11,10 +12,7 @@ function App() {
     <>
       <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
         <div className="container">
-          <NavLink
-            to="/penguin-loot-tracker"
-            className="navbar-brand"
-          >
+          <NavLink to="/penguin-loot-tracker" className="navbar-brand">
             {APP_NAME}
           </NavLink>
           <button
@@ -30,6 +28,12 @@ function App() {
             className="nav-link ms-3 priority-link"
           >
             Priority Tracker
+          </NavLink>
+          <NavLink
+            to="/penguin-loot-tracker/loot-asigner"
+            className="nav-link ms-3 priority-link"
+          >
+            Loot Asigner
           </NavLink>
           <div className="collapse navbar-collapse" id="navbarNav">
             <div className="navbar-nav ms-auto d-flex align-items-center">
@@ -53,6 +57,10 @@ function App() {
               <Route
                 path="/penguin-loot-tracker/priority-tracker"
                 element={<PriorityTracker />}
+              />
+              <Route
+                path="/penguin-loot-tracker/loot-asigner"
+                element={<ItemSearcher />}
               />
               <Route path="*" element={<Chart />} />
             </Routes>
