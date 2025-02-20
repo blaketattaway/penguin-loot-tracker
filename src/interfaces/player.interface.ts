@@ -1,6 +1,5 @@
 export interface Player {
     name: string;
-    totalLoot: number;
     lootedItems: Item[];
 }
 

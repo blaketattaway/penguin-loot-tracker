@@ -11,130 +11,7 @@ import {
 import { Player } from "../interfaces/player.interface";
 import React, { useState } from "react";
 import LootModal from "./lootmodal";
-
-const data: Player[] = [
-  {
-    name: "Andrius",
-    totalLoot: 0,
-    lootedItems: [],
-  },
-  {
-    name: "Ángel",
-    totalLoot: 0,
-    lootedItems: [],
-  },
-  {
-    name: "Ashes",
-    totalLoot: 0,
-    lootedItems: [],
-  },
-  {
-    name: "BB",
-    totalLoot: 0,
-    lootedItems: [],
-  },
-  {
-    name: "Dalrien",
-    totalLoot: 0,
-    lootedItems: [],
-  },
-  {
-    name: "Dingo",
-    totalLoot: 0,
-    lootedItems: [],
-  },
-  {
-    name: "Drack",
-    totalLoot: 0,
-    lootedItems: [],
-  },
-  {
-    name: "Furros",
-    totalLoot: 0,
-    lootedItems: [],
-  },
-  {
-    name: "Kaztu",
-    totalLoot: 0,
-    lootedItems: [],
-  },
-  {
-    name: "LLuci",
-    totalLoot: 0,
-    lootedItems: [],
-  },
-  {
-    name: "Mugrozond",
-    totalLoot: 0,
-    lootedItems: [],
-  },
-  {
-    name: "Nacus",
-    totalLoot: 0,
-    lootedItems: [],
-  },
-  {
-    name: "Nate",
-    totalLoot: 0,
-    lootedItems: [],
-  },
-  {
-    name: "Picookie",
-    totalLoot: 0,
-    lootedItems: [],
-  },
-  {
-    name: "Racnur",
-    totalLoot: 0,
-    lootedItems: [],
-  },
-  {
-    name: "Razor",
-    totalLoot: 0,
-    lootedItems: [],
-  },
-  {
-    name: "Reno",
-    totalLoot: 0,
-    lootedItems: [],
-  },
-  {
-    name: "Richo",
-    totalLoot: 2,
-    lootedItems: [
-      {
-        id: 226810,
-        main: false,
-        name: "Infiltrator's Shroud",
-      },
-      {
-        id: 226810,
-        main: false,
-        name: "Infiltrator's Shroud",
-      },
-    ],
-  },
-  {
-    name: "Strafend",
-    totalLoot: 0,
-    lootedItems: [],
-  },
-  {
-    name: "Tacho",
-    totalLoot: 0,
-    lootedItems: [],
-  },
-  {
-    name: "Tugnar",
-    totalLoot: 0,
-    lootedItems: [],
-  },
-  {
-    name: "Yuti",
-    totalLoot: 0,
-    lootedItems: [],
-  },
-];
+import { playerData } from "../data/loot";
 
 const Chart: React.FC = () => {
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
@@ -155,7 +32,7 @@ const Chart: React.FC = () => {
         height="100%"
         style={{ color: "white" }}
       >
-        <BarChart layout="vertical" width={150} height={40} data={data}>
+        <BarChart layout="vertical" width={150} height={40} data={playerData}>
           <Tooltip
             cursor={{
               fill: "transparent",
@@ -168,7 +45,7 @@ const Chart: React.FC = () => {
             content={({ active, payload }) => {
               if (active && payload && payload.length > 0) {
                 const lootValue = Number(payload[0].value);
-                
+
                 if (lootValue > 0) {
                   return (
                     <div
@@ -188,21 +65,24 @@ const Chart: React.FC = () => {
               return null;
             }}
           />
-          <Bar dataKey="totalLoot" activeBar={<Rectangle fill="#dbe4d0" />}>
-            {data.map((entry, index) => (
+          <Bar
+            dataKey={(entry) => entry.lootedItems.length}
+            activeBar={<Rectangle fill="#dbe4d0" />}
+          >
+            {playerData.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
                 fill="#87ceeb"
                 onMouseOver={(
                   e: React.MouseEvent<SVGRectElement, MouseEvent>
                 ) => {
-                  if (entry.totalLoot > 0)
+                  if (entry.lootedItems.length > 0)
                     e.currentTarget.style.fill = "#f4a261";
                 }}
                 onMouseOut={(
                   e: React.MouseEvent<SVGRectElement, MouseEvent>
                 ) => {
-                  if (entry.totalLoot > 0)
+                  if (entry.lootedItems.length > 0)
                     e.currentTarget.style.fill = "#87ceeb";
                 }}
                 onClick={() => handleBarClick(entry)}
