@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { fetchBlizzardItems } from "../services/blizzardService";
 import { BlizzardItem } from "../interfaces/blizzard.interface";
+import LoginModal from "./loginmodal";
 
 const ItemSearcher = () => {
   const [query, setQuery] = useState<string>("");
@@ -70,7 +71,7 @@ const ItemSearcher = () => {
     <div className="container mt-4">
       <div className="card bg-dark text-white shadow-lg">
         <div className="card-body">
-          <h2 className="card-title text-center">🔍 Item Search</h2>
+          <h2 className="card-title text-center">🔍 Item Search <LoginModal/></h2>
           <div className="input-group mb-3">
             <input
               type="text"

@@ -1,24 +1,15 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Player } from "../interfaces/player.interface";
 
 interface LootModalProps {
   selectedPlayer: Player | null;
 }
 
-declare global {
-  interface Window {
-    bootstrap: any;
-  }
-}
-
-const LootModal: React.FC<LootModalProps> = ({ selectedPlayer }) => {
-  const modalRef = useRef<HTMLDivElement | null>(null);
+const LootModal = ({ selectedPlayer } : LootModalProps) => {
+  const [modalTriggered, setModalTriggered] = useState<boolean>(false);
 
   const openModal = () => {
-    if (modalRef.current) {
-      const modal = new window.bootstrap.Modal(modalRef.current);
-      modal.show();
-    }
+    setModalTriggered(true);
   };
 
   useEffect(() => {
@@ -29,16 +20,15 @@ const LootModal: React.FC<LootModalProps> = ({ selectedPlayer }) => {
 
   return (
     <div
-      className="modal fade"
+      className={`modal fade ${modalTriggered ? "show" : "hide"}`}
       id="lootModal"
-      ref={modalRef}
       tabIndex={-1}
       aria-hidden="true"
     >
       <div className="modal-dialog">
         <div className="modal-content bg-dark text-light">
           <div className="modal-header border-secondary">
-            <h5 className="modal-title">Loot de {selectedPlayer?.name}</h5>
+            <h5 className="modal-title">{selectedPlayer?.name}'s Loot</h5>
             <button
               type="button"
               className="btn-close btn-close-white"
@@ -56,7 +46,7 @@ const LootModal: React.FC<LootModalProps> = ({ selectedPlayer }) => {
                 ))}
               </ul>
             ) : (
-              <p>Este jugador no tiene loot.</p>
+              <p>Player without loot.</p>
             )}
           </div>
           <div className="modal-footer border-secondary">
@@ -65,7 +55,7 @@ const LootModal: React.FC<LootModalProps> = ({ selectedPlayer }) => {
               className="btn btn-outline-light"
               data-bs-dismiss="modal"
             >
-              Cerrar
+              Close
             </button>
           </div>
         </div>

@@ -8,6 +8,7 @@ import ItemSearcher from "./components/itemsearcher";
 const APP_NAME: string = "Penguin Loot Tracker";
 
 function App() {
+
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
