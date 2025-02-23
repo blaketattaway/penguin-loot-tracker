@@ -1,47 +1,43 @@
 import { useEffect, useRef, useState } from "react";
-import { login } from "../services/penguinLootTrackerService";
-import { Token } from "../interfaces/token.interface";
 import * as bootstrap from "bootstrap";
-import PlayerModal from "./playermodal";
+import { createPlayer } from "../services/penguinLootTrackerService";
+import { Result } from "../interfaces/result.interface";
+import { toast } from "react-toastify";
 
-const LoginModal = () => {
-  const [password, setPassword] = useState("");
-  const [lastPassword, setLastPassword] = useState("");
+const PlayerModal = () => {
+  const modalRef = useRef<HTMLDivElement | null>(null);
+  const [playerName, setPlayerName] = useState("");
+  const [lastPlayerName, setLastPlayerName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [validToken, setValidToken] = useState(false);
   const [, setIsModalOpen] = useState(false);
-  const loginModalRef = useRef<HTMLDivElement | null>(null);
 
   const openModal = () => {
-    if (loginModalRef.current) {
-      const modal = new bootstrap.Modal(loginModalRef.current);
+    if (modalRef.current) {
+      const modal = new bootstrap.Modal(modalRef.current);
       modal.show();
       setIsModalOpen(true);
     }
   };
 
-  const handleLogin = async () => {
-    if (password.trim() !== "" && password !== lastPassword) {
+  const handleCreatePlayer = () => {
+    if (playerName.trim() !== "" && playerName !== lastPlayerName) {
       setLoading(true);
       try {
-        login({ accessCode: password }).then((token: Token) => {
-          const tokenExpiration: string = new Date(
-            token.expiration
-          ).toISOString();
+        createPlayer({ name: playerName, lootedItems: [] }).then(
+          (result: Result) => {
+            if (result.success) {
+              toast(result.message);
+            } else {
+              toast.warn(result.message);
+            }
+          }
+        );
 
-          localStorage.setItem("plt-token", token.token);
-          localStorage.setItem("plt-token-expiration", tokenExpiration);
+        setPlayerName("");
+        setLastPlayerName("");
 
-          setValidToken(true);
-        });
-
-        setLastPassword("");
-        setPassword("");
-
-        if (loginModalRef.current) {
-          const modalInstance = bootstrap.Modal.getInstance(
-            loginModalRef.current
-          );
+        if (modalRef.current) {
+          const modalInstance = bootstrap.Modal.getInstance(modalRef.current);
           modalInstance?.hide();
         }
       } catch {
@@ -53,27 +49,17 @@ const LoginModal = () => {
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      handleLogin();
+      handleCreatePlayer();
     }
   };
 
-  const isTokenValid = (): boolean => {
-    const token = localStorage.getItem("plt-token");
-    const expiration = localStorage.getItem("plt-token-expiration");
-    return token && expiration && new Date(expiration) > new Date()
-      ? true
-      : false;
-  };
-
   useEffect(() => {
-    if (!loginModalRef.current) return;
+    if (!modalRef.current) return;
 
-    const modalElement = loginModalRef.current;
+    const modalElement = modalRef.current;
 
     const handleClose = () => setIsModalOpen(false);
     modalElement.addEventListener("hidden.bs.modal", handleClose);
-
-    setValidToken(isTokenValid);
 
     return () => {
       modalElement.removeEventListener("hidden.bs.modal", handleClose);
@@ -82,25 +68,21 @@ const LoginModal = () => {
 
   return (
     <>
-      {validToken ? (
-        <PlayerModal />
-      ) : (
-        <button className="btn btn-outline-light float-end" onClick={openModal}>
-          <i className="bi bi-key-fill"></i> Login
-        </button>
-      )}
+      <button className="btn btn-outline-light float-end" onClick={openModal}>
+        <i className="bi bi-plus-circle-dotted"></i> Create Player
+      </button>
 
       <div
         className="modal fade"
-        ref={loginModalRef}
-        id="loginModal"
+        ref={modalRef}
+        id="playerModal"
         tabIndex={-1}
         aria-hidden="true"
       >
         <div className="modal-dialog">
           <div className="modal-content bg-dark text-light">
             <div className="modal-header border-secondary">
-              <h5 className="modal-title">Login</h5>
+              <h5 className="modal-title">Create Player</h5>
               <button
                 type="button"
                 className="btn-close btn-close-white"
@@ -114,19 +96,19 @@ const LoginModal = () => {
               ) : (
                 <div className="input-group mb-3">
                   <input
-                    type="password"
+                    type="text"
                     className="form-control bg-secondary text-white password-input"
-                    placeholder="Type your password..."
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Type player's name..."
+                    value={playerName}
+                    onChange={(e) => setPlayerName(e.target.value)}
                     onKeyDown={handleKeyPress}
                   />
                   <button
                     className="btn btn-outline-light toggle-password"
                     type="button"
-                    onClick={() => handleLogin}
+                    onClick={() => handleCreatePlayer}
                   >
-                    Send
+                    Add
                   </button>
                 </div>
               )}
@@ -147,4 +129,4 @@ const LoginModal = () => {
   );
 };
 
-export default LoginModal;
+export default PlayerModal;

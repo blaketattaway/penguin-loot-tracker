@@ -4,11 +4,11 @@ import githubImage from "./assets/github-mark-white.svg";
 import { NavLink, Route, Routes } from "react-router-dom";
 import PriorityTracker from "./components/prioritytracker";
 import ItemSearcher from "./components/itemsearcher";
+import { Bounce, ToastContainer } from "react-toastify";
 
 const APP_NAME: string = "Penguin Loot Tracker";
 
 function App() {
-
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
@@ -67,6 +67,19 @@ function App() {
             </Routes>
           </div>
         </div>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition={Bounce}
+        />
       </main>
     </>
   );

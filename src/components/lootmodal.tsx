@@ -1,15 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Player } from "../interfaces/player.interface";
+import * as bootstrap from "bootstrap";
 
 interface LootModalProps {
   selectedPlayer: Player | null;
 }
 
-const LootModal = ({ selectedPlayer } : LootModalProps) => {
-  const [modalTriggered, setModalTriggered] = useState<boolean>(false);
+const LootModal = ({ selectedPlayer }: LootModalProps) => {
+  const modalRef = useRef<HTMLDivElement | null>(null);
+  const [, setIsModalOpen] = useState(false);
 
   const openModal = () => {
-    setModalTriggered(true);
+    if (modalRef.current) {
+      const modal = new bootstrap.Modal(modalRef.current);
+      modal.show();
+      setIsModalOpen(true);
+    }
   };
 
   useEffect(() => {
@@ -18,9 +24,23 @@ const LootModal = ({ selectedPlayer } : LootModalProps) => {
     }
   }, [selectedPlayer]);
 
+  useEffect(() => {
+    if (!modalRef.current) return;
+
+    const modalElement = modalRef.current;
+
+    const handleClose = () => setIsModalOpen(false);
+    modalElement.addEventListener("hidden.bs.modal", handleClose);
+
+    return () => {
+      modalElement.removeEventListener("hidden.bs.modal", handleClose);
+    };
+  }, []);
+
   return (
     <div
-      className={`modal fade ${modalTriggered ? "show" : "hide"}`}
+      className="modal fade"
+      ref={modalRef}
       id="lootModal"
       tabIndex={-1}
       aria-hidden="true"
@@ -41,7 +61,9 @@ const LootModal = ({ selectedPlayer } : LootModalProps) => {
               <ul className="loot-list">
                 {selectedPlayer.lootedItems.map((item, index) => (
                   <li key={index} className="mt-2">
-                    <a href="#" data-wowhead={`item=${item.id}`}>{item.name}</a>
+                    <a href="#" data-wowhead={`item=${item.id}`}>
+                      {item.name}
+                    </a>
                   </li>
                 ))}
               </ul>

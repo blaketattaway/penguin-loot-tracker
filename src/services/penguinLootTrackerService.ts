@@ -1,8 +1,9 @@
 import { Login } from "../interfaces/login.interface";
 import { Player } from "../interfaces/player.interface";
+import { Result } from "../interfaces/result.interface";
 import { Token } from "../interfaces/token.interface";
 
-const API_URL = "https://penguin-loot-tracker.azurewebsites.net/api/";
+const API_URL = "https://localhost:7123/api/";
 
 const HEADERS: HeadersInit = {
     Authorization: `Bearer ${localStorage.getItem("plt-token")}`,
@@ -49,3 +50,24 @@ export const login = async (login: Login): Promise<Token> => {
     throw error;
   }
 };
+
+export const createPlayer = async (player: Player): Promise<Result> => {
+  try {
+    const url = `${API_URL}Player/Add`;
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: HEADERS,
+      body: JSON.stringify(player),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching data", error);
+    throw error;
+  }
+}
