@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { playerData } from "../data/loot";
+import { useEffect, useState } from "react";
 import { Player, PriorityEntry } from "../interfaces/player.interface";
+import { fetchPlayersData } from "../services/penguinLootTrackerService";
 
 const PriorityTracker = () => {
-  const [players] = useState<Player[]>(playerData);
+  const [players, setPlayers] = useState<Player[]>([]);
 
   const calculatePriority = (players: Player[]): PriorityEntry[] => {
     const sortedPlayers = [...players].sort(
@@ -35,6 +35,18 @@ const PriorityTracker = () => {
   };
 
   const priorityData = calculatePriority(players);
+
+  useEffect(() => {
+    fetchPlayersData().then((players: Player[]) => {
+      const chartData = players.map((player: Player) => ({
+        id: player.id,
+        name: player.name,
+        lootedItems: player.lootedItems,
+      }));
+
+      setPlayers(chartData);
+    });
+  }, []);
 
   return (
     <div className="container mt-4">

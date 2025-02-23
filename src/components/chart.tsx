@@ -9,12 +9,13 @@ import {
   YAxis,
 } from "recharts";
 import { Player } from "../interfaces/player.interface";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LootModal from "./lootmodal";
-import { playerData } from "../data/loot";
+import { fetchPlayersData } from "../services/penguinLootTrackerService";
 
 const Chart: React.FC = () => {
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
+  const [playerData, setPlayerData] = useState<Player[]>([]);
 
   const handleBarClick = (player: Player) => {
     if (selectedPlayer?.name === player.name) {
@@ -24,6 +25,18 @@ const Chart: React.FC = () => {
       setSelectedPlayer(player);
     }
   };
+
+  useEffect(() => {
+    fetchPlayersData().then((players: Player[]) => {
+      const chartData = players.map((player: Player) => ({
+        id: player.id,
+        name: player.name,
+        lootedItems: player.lootedItems,
+      }));
+
+      setPlayerData(chartData);
+    });
+  }, []);
 
   return (
     <>
