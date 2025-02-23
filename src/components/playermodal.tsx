@@ -102,6 +102,7 @@ const PlayerModal = () => {
                     value={playerName}
                     onChange={(e) => setPlayerName(e.target.value)}
                     onKeyDown={handleKeyPress}
+                    autoComplete="x"
                   />
                   <button
                     className="btn btn-outline-light toggle-password"

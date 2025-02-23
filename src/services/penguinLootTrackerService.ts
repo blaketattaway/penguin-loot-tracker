@@ -3,7 +3,7 @@ import { Player } from "../interfaces/player.interface";
 import { Result } from "../interfaces/result.interface";
 import { Token } from "../interfaces/token.interface";
 
-const API_URL = "https://localhost:7123/api/";
+const API_URL = "https://penguin-loot-tracker.azurewebsites.net/api/";
 
 const HEADERS: HeadersInit = {
     Authorization: `Bearer ${localStorage.getItem("plt-token")}`,

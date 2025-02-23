@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchBlizzardItems } from "../services/blizzardService";
 import { BlizzardItem } from "../interfaces/blizzard.interface";
 import LoginModal from "./loginmodal";
@@ -27,7 +27,10 @@ const ItemSearcher = () => {
         const data = await fetchBlizzardItems(query);
         setItems(data.results.map((result) => result.data));
         setFilteredItems(data.results.map((result) => result.data));
+        localStorage.setItem("plt-search-result", JSON.stringify(data.results.map((result) => result.data)));
+        localStorage.setItem("plt-search", query);
         setCurrentPage(1);
+        localStorage.setItem("plt-search-page", "1");
         setLastQuery(query);
       } catch {
         setError("Error retrieving Blizzard data.");
@@ -64,8 +67,30 @@ const ItemSearcher = () => {
   const goToPage = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
+      localStorage.setItem("plt-search-page", page.toString());
     }
   };
+
+  useEffect(() => {
+    const localStorageItems = localStorage.getItem("plt-search-result");
+    const localStorageSearch = localStorage.getItem("plt-search");
+    const localStorageSearchPage = localStorage.getItem("plt-search-page");
+
+    if (localStorageItems) {
+      setItems(JSON.parse(localStorageItems));
+      setFilteredItems(JSON.parse(localStorageItems));
+    }
+
+    if (localStorageSearch) {
+      setQuery(localStorageSearch);
+      setLastQuery(localStorageSearch);
+    }
+
+    if (localStorageSearchPage) {
+      setCurrentPage(Number(localStorageSearchPage));
+    }
+
+  }, []);
 
   return (
     <div className="container mt-4">
