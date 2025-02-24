@@ -34,7 +34,7 @@ function App() {
             to="/penguin-loot-tracker/loot-asigner"
             className="nav-link ms-3 priority-link"
           >
-            Loot Asigner
+            Loot Assigner
           </NavLink>
           <div className="collapse navbar-collapse" id="navbarNav">
             <div className="navbar-nav ms-auto d-flex align-items-center">

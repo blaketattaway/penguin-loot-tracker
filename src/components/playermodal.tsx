@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 const PlayerModal = () => {
   const modalRef = useRef<HTMLDivElement | null>(null);
   const [playerName, setPlayerName] = useState("");
-  const [lastPlayerName, setLastPlayerName] = useState("");
   const [loading, setLoading] = useState(false);
   const [, setIsModalOpen] = useState(false);
 
@@ -20,31 +19,27 @@ const PlayerModal = () => {
   };
 
   const handleCreatePlayer = () => {
-    if (playerName.trim() !== "" && playerName !== lastPlayerName) {
-      setLoading(true);
+    setLoading(true);
       try {
         createPlayer({ name: playerName, lootedItems: [] }).then(
           (result: Result) => {
             if (result.success) {
               toast(result.message);
+              setPlayerName("");
+
+              if (modalRef.current) {
+                const modalInstance = bootstrap.Modal.getInstance(modalRef.current);
+                modalInstance?.hide();
+              }
             } else {
               toast.warn(result.message);
             }
           }
         );
-
-        setPlayerName("");
-        setLastPlayerName("");
-
-        if (modalRef.current) {
-          const modalInstance = bootstrap.Modal.getInstance(modalRef.current);
-          modalInstance?.hide();
-        }
       } catch {
         console.error();
       }
       setLoading(false);
-    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -54,11 +49,16 @@ const PlayerModal = () => {
   };
 
   useEffect(() => {
+
     if (!modalRef.current) return;
 
     const modalElement = modalRef.current;
 
-    const handleClose = () => setIsModalOpen(false);
+    const handleClose = () => {
+      setIsModalOpen(false);
+      setPlayerName('');
+    }
+    
     modalElement.addEventListener("hidden.bs.modal", handleClose);
 
     return () => {
@@ -107,7 +107,7 @@ const PlayerModal = () => {
                   <button
                     className="btn btn-outline-light toggle-password"
                     type="button"
-                    onClick={() => handleCreatePlayer}
+                    onClick={handleCreatePlayer}
                   >
                     Add
                   </button>

@@ -6,7 +6,6 @@ import PlayerModal from "./playermodal";
 
 const LoginModal = () => {
   const [password, setPassword] = useState("");
-  const [lastPassword, setLastPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [validToken, setValidToken] = useState(false);
   const [, setIsModalOpen] = useState(false);
@@ -21,7 +20,7 @@ const LoginModal = () => {
   };
 
   const handleLogin = async () => {
-    if (password.trim() !== "" && password !== lastPassword) {
+    if (password.trim() !== "") {
       setLoading(true);
       try {
         login({ accessCode: password }).then((token: Token) => {
@@ -29,14 +28,12 @@ const LoginModal = () => {
             token.expiration
           ).toISOString();
 
+          setPassword("");
           localStorage.setItem("plt-token", token.token);
           localStorage.setItem("plt-token-expiration", tokenExpiration);
 
           setValidToken(true);
         });
-
-        setLastPassword("");
-        setPassword("");
 
         if (loginModalRef.current) {
           const modalInstance = bootstrap.Modal.getInstance(
@@ -124,7 +121,7 @@ const LoginModal = () => {
                   <button
                     className="btn btn-outline-light toggle-password"
                     type="button"
-                    onClick={() => handleLogin}
+                    onClick={handleLogin}
                   >
                     Send
                   </button>
