@@ -3,13 +3,14 @@ import { login } from "../services/penguinLootTrackerService";
 import { Token } from "../interfaces/token.interface";
 import * as bootstrap from "bootstrap";
 import PlayerModal from "./playermodal";
+import { useAuth } from "../hooks/useAuth";
 
 const LoginModal = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [validToken, setValidToken] = useState(false);
   const [, setIsModalOpen] = useState(false);
   const loginModalRef = useRef<HTMLDivElement | null>(null);
+  const { isValid, checkTokenValidity } = useAuth();
 
   const openModal = () => {
     if (loginModalRef.current) {
@@ -32,7 +33,7 @@ const LoginModal = () => {
           localStorage.setItem("plt-token", token.token);
           localStorage.setItem("plt-token-expiration", tokenExpiration);
 
-          setValidToken(true);
+          checkTokenValidity();
         });
 
         if (loginModalRef.current) {
@@ -54,14 +55,6 @@ const LoginModal = () => {
     }
   };
 
-  const isTokenValid = (): boolean => {
-    const token = localStorage.getItem("plt-token");
-    const expiration = localStorage.getItem("plt-token-expiration");
-    return token && expiration && new Date(expiration) > new Date()
-      ? true
-      : false;
-  };
-
   useEffect(() => {
     if (!loginModalRef.current) return;
 
@@ -70,16 +63,16 @@ const LoginModal = () => {
     const handleClose = () => setIsModalOpen(false);
     modalElement.addEventListener("hidden.bs.modal", handleClose);
 
-    setValidToken(isTokenValid);
+    checkTokenValidity();
 
     return () => {
       modalElement.removeEventListener("hidden.bs.modal", handleClose);
     };
-  }, []);
+  }, [checkTokenValidity]);
 
   return (
     <>
-      {validToken ? (
+      {isValid ? (
         <PlayerModal />
       ) : (
         <button className="btn btn-outline-light float-end" onClick={openModal}>

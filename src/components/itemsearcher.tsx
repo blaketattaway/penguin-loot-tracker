@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchBlizzardItems } from "../services/blizzardService";
 import { BlizzardItem } from "../interfaces/blizzard.interface";
 import LoginModal from "./loginmodal";
+import { useAuth } from "../hooks/useAuth";
 
 const ItemSearcher = () => {
   const [query, setQuery] = useState<string>("");
@@ -12,6 +13,8 @@ const ItemSearcher = () => {
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [lastQuery, setLastQuery] = useState<string>("");
+  const { isValid } = useAuth();
+  const [, setKey] = useState(1);
 
   const itemsPerPage: number = 10;
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -27,7 +30,10 @@ const ItemSearcher = () => {
         const data = await fetchBlizzardItems(query);
         setItems(data.results.map((result) => result.data));
         setFilteredItems(data.results.map((result) => result.data));
-        localStorage.setItem("plt-search-result", JSON.stringify(data.results.map((result) => result.data)));
+        localStorage.setItem(
+          "plt-search-result",
+          JSON.stringify(data.results.map((result) => result.data))
+        );
         localStorage.setItem("plt-search", query);
         setCurrentPage(1);
         localStorage.setItem("plt-search-page", "1");
@@ -53,9 +59,9 @@ const ItemSearcher = () => {
     if (searchTerm === "") {
       setFilteredItems(items);
     } else {
-
       const filtered = items.filter(
-        (item) => item.name.en_US.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
+        (item) =>
+          item.name.en_US.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
       );
 
       setFilteredItems(filtered);
@@ -89,14 +95,19 @@ const ItemSearcher = () => {
     if (localStorageSearchPage) {
       setCurrentPage(Number(localStorageSearchPage));
     }
-
   }, []);
+
+  useEffect(() => {
+    setKey((prevKey) => prevKey + 1);
+  }, [isValid]);
 
   return (
     <div className="container mt-4">
       <div className="card bg-dark text-white shadow-lg">
         <div className="card-body">
-          <h2 className="card-title text-center">🔍 Item Search <LoginModal/></h2>
+          <h2 className="card-title text-center">
+            🔍 Item Search <LoginModal />
+          </h2>
           <div className="input-group mb-3">
             <input
               type="text"
@@ -138,7 +149,7 @@ const ItemSearcher = () => {
               <thead>
                 <tr>
                   <th>Item</th>
-                  <th>Actions</th>
+                  {isValid ? <th>Actions</th> : <></>}
                 </tr>
               </thead>
               <tbody>
@@ -154,12 +165,12 @@ const ItemSearcher = () => {
                           {item.name.en_US}
                         </a>
                       </td>
-                      <td></td>
+                      {isValid ? <td></td> : <></>}
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={2} className="text-center">
+                    <td colSpan={isValid ? 2 : 1} className="text-center">
                       No data found
                     </td>
                   </tr>

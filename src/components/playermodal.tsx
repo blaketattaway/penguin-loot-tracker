@@ -58,7 +58,7 @@ const PlayerModal = () => {
       setIsModalOpen(false);
       setPlayerName('');
     }
-    
+
     modalElement.addEventListener("hidden.bs.modal", handleClose);
 
     return () => {
@@ -102,7 +102,7 @@ const PlayerModal = () => {
                     value={playerName}
                     onChange={(e) => setPlayerName(e.target.value)}
                     onKeyDown={handleKeyPress}
-                    autoComplete="x"
+                    autoComplete="off"
                   />
                   <button
                     className="btn btn-outline-light toggle-password"

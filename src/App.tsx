@@ -5,6 +5,7 @@ import { NavLink, Route, Routes } from "react-router-dom";
 import PriorityTracker from "./components/prioritytracker";
 import ItemSearcher from "./components/itemsearcher";
 import { Bounce, ToastContainer } from "react-toastify";
+import { AuthProvider } from "./context/authprovider";
 
 const APP_NAME: string = "Penguin Loot Tracker";
 
@@ -53,18 +54,20 @@ function App() {
       <main className="container mt-5">
         <div className="row">
           <div className="col-md-12" style={{ height: "70vh" }}>
-            <Routes>
-              <Route path="/penguin-loot-tracker" element={<Chart />} />
-              <Route
-                path="/penguin-loot-tracker/priority-tracker"
-                element={<PriorityTracker />}
-              />
-              <Route
-                path="/penguin-loot-tracker/loot-asigner"
-                element={<ItemSearcher />}
-              />
-              <Route path="*" element={<Chart />} />
-            </Routes>
+            <AuthProvider>
+              <Routes>
+                <Route path="/penguin-loot-tracker" element={<Chart />} />
+                <Route
+                  path="/penguin-loot-tracker/priority-tracker"
+                  element={<PriorityTracker />}
+                />
+                <Route
+                  path="/penguin-loot-tracker/loot-asigner"
+                  element={<ItemSearcher />}
+                />
+                <Route path="*" element={<Chart />} />
+              </Routes>
+            </AuthProvider>
           </div>
         </div>
         <ToastContainer
