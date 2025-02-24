@@ -6,7 +6,6 @@ import { Token } from "../interfaces/token.interface";
 const API_URL = "https://penguin-loot-tracker.azurewebsites.net/api/";
 
 const HEADERS: HeadersInit = {
-    Authorization: `Bearer ${localStorage.getItem("plt-token")}`,
     "Content-Type": "application/json",
 }
 
@@ -55,9 +54,11 @@ export const createPlayer = async (player: Player): Promise<Result> => {
   try {
     const url = `${API_URL}Player/Add`;
 
+    const rHeaders = {...HEADERS , Authorization: `Bearer ${localStorage.getItem("plt-token")}`,}
+
     const response = await fetch(url, {
       method: "POST",
-      headers: HEADERS,
+      headers: rHeaders,
       body: JSON.stringify(player),
     });
 
