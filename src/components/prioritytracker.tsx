@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Player, PriorityEntry } from "../interfaces/player.interface";
 import { fetchPlayersData } from "../services/penguinLootTrackerService";
+import LoadingIndicator from "./loadingindicator";
 
 const PriorityTracker = () => {
   const [players, setPlayers] = useState<Player[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const calculatePriority = (players: Player[]): PriorityEntry[] => {
     const sortedPlayers = [...players].sort(
@@ -37,6 +39,8 @@ const PriorityTracker = () => {
   const priorityData = calculatePriority(players);
 
   useEffect(() => {
+    setLoading(true);
+
     fetchPlayersData().then((players: Player[]) => {
       const chartData = players.map((player: Player) => ({
         id: player.id,
@@ -45,6 +49,7 @@ const PriorityTracker = () => {
       }));
 
       setPlayers(chartData);
+      setLoading(false);
     });
   }, []);
 
@@ -54,24 +59,32 @@ const PriorityTracker = () => {
         <div className="card-body">
           <h2 className="card-title text-center">🎯 Loot Priority</h2>
 
-          <div className="table-responsive">
-            <table className="table table-dark table-striped">
-              <thead>
-                <tr>
-                  <th>Priority</th>
-                  <th>Players</th>
-                </tr>
-              </thead>
-              <tbody>
-                {priorityData.map((entry, index) => (
-                  <tr key={index}>
-                    <td>{entry.priority}</td>
-                    <td>{entry.players.join(", ")}</td>
+          {loading ? (
+            <LoadingIndicator
+              color="white"
+              message="Obtaining Data..."
+              size="md"
+            />
+          ) : (
+            <div className="table-responsive">
+              <table className="table table-dark table-striped">
+                <thead>
+                  <tr>
+                    <th>Priority</th>
+                    <th>Players</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {priorityData.map((entry, index) => (
+                    <tr key={index}>
+                      <td>{entry.priority}</td>
+                      <td>{entry.players.join(", ")}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
     </div>

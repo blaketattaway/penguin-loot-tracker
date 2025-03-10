@@ -3,6 +3,7 @@ import { fetchBlizzardItems } from "../services/blizzardService";
 import { BlizzardItem } from "../interfaces/blizzard.interface";
 import LoginModal from "./loginmodal";
 import { useAuth } from "../hooks/useAuth";
+import LootAssignerModal from "./lootassignermodal";
 
 const ItemSearcher = () => {
   const [query, setQuery] = useState<string>("");
@@ -120,10 +121,17 @@ const ItemSearcher = () => {
             <button
               className="btn btn-primary"
               onClick={handleSearch}
+              aria-hidden="true"
               disabled={loading}
             >
               {loading ? (
-                <span className="spinner-border spinner-border-sm"></span>
+                <>
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                  ></span>
+                  Searching ...
+                </>
               ) : (
                 "Search"
               )}
@@ -165,7 +173,13 @@ const ItemSearcher = () => {
                           {item.name.en_US}
                         </a>
                       </td>
-                      {isValid ? <td></td> : <></>}
+                      {isValid ? (
+                        <td>
+                          <LootAssignerModal selectedItem={item} />
+                        </td>
+                      ) : (
+                        <></>
+                      )}
                     </tr>
                   ))
                 ) : (

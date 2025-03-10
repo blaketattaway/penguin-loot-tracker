@@ -2,11 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { Player } from "../interfaces/player.interface";
 import * as bootstrap from "bootstrap";
 
-interface LootModalProps {
+interface PlayerLootModalProps {
   selectedPlayer: Player | null;
 }
 
-const LootModal = ({ selectedPlayer }: LootModalProps) => {
+const PlayerLootModal = ({ selectedPlayer }: PlayerLootModalProps) => {
   const modalRef = useRef<HTMLDivElement | null>(null);
   const [, setIsModalOpen] = useState(false);
 
@@ -59,8 +59,8 @@ const LootModal = ({ selectedPlayer }: LootModalProps) => {
           <div className="modal-body">
             {selectedPlayer?.lootedItems.length ? (
               <ul className="loot-list">
-                {selectedPlayer.lootedItems.map((item, index) => (
-                  <li key={index} className="mt-2">
+                {selectedPlayer.lootedItems.map((item) => (
+                  <li key={item.tableId} className="mt-2">
                     <a href="#" data-wowhead={`item=${item.id}`}>
                       {item.name}
                     </a>
@@ -86,4 +86,4 @@ const LootModal = ({ selectedPlayer }: LootModalProps) => {
   );
 };
 
-export default LootModal;
+export default PlayerLootModal;
