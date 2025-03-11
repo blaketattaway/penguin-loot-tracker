@@ -14,7 +14,7 @@ function App() {
     <>
       <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
         <div className="container">
-          <NavLink to="/penguin-loot-tracker" className="navbar-brand">
+          <NavLink to="/" className="navbar-brand">
             {APP_NAME}
           </NavLink>
           <button
@@ -26,13 +26,13 @@ function App() {
             <span className="navbar-toggler-icon"></span>
           </button>
           <NavLink
-            to="/penguin-loot-tracker/priority-tracker"
+            to="/priority-tracker"
             className="nav-link ms-3 priority-link"
           >
             Priority Tracker
           </NavLink>
           <NavLink
-            to="/penguin-loot-tracker/loot-asigner"
+            to="/loot-asigner"
             className="nav-link ms-3 priority-link"
           >
             Loot Assigner
@@ -56,13 +56,13 @@ function App() {
           <div className="col-md-12" style={{ height: "70vh" }}>
             <AuthProvider>
               <Routes>
-                <Route path="/penguin-loot-tracker" element={<Chart />} />
+                <Route path="/" element={<Chart />} />
                 <Route
-                  path="/penguin-loot-tracker/priority-tracker"
+                  path="/priority-tracker"
                   element={<PriorityTracker />}
                 />
                 <Route
-                  path="/penguin-loot-tracker/loot-asigner"
+                  path="/loot-asigner"
                   element={<ItemSearcher />}
                 />
                 <Route path="*" element={<Chart />} />
