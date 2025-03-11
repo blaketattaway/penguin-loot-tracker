@@ -13,8 +13,15 @@ const LoginModal = () => {
   const { isValid, checkTokenValidity } = useAuth();
 
   const openModal = () => {
-    if (loginModalRef.current) {
-      const modal = new bootstrap.Modal(loginModalRef.current);
+    const modalElement = loginModalRef.current;
+
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+
+      modalElement.addEventListener("shown.bs.modal", () => {
+        modalElement.removeAttribute("aria-hidden");
+      });
+
       modal.show();
       setIsModalOpen(true);
     }
@@ -60,7 +67,11 @@ const LoginModal = () => {
 
     const modalElement = loginModalRef.current;
 
-    const handleClose = () => setIsModalOpen(false);
+    const handleClose = () => {
+      modalElement.setAttribute("aria-hidden", "true");
+      setIsModalOpen(false);
+    }
+    
     modalElement.addEventListener("hidden.bs.modal", handleClose);
 
     checkTokenValidity();

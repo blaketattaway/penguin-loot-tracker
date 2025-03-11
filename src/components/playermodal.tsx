@@ -11,8 +11,15 @@ const PlayerModal = () => {
   const [, setIsModalOpen] = useState(false);
 
   const openModal = () => {
-    if (modalRef.current) {
-      const modal = new bootstrap.Modal(modalRef.current);
+    const modalElement = modalRef.current;
+
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+
+      modalElement.addEventListener("shown.bs.modal", () => {
+        modalElement.removeAttribute("aria-hidden");
+      });
+
       modal.show();
       setIsModalOpen(true);
     }
@@ -20,26 +27,28 @@ const PlayerModal = () => {
 
   const handleCreatePlayer = () => {
     setLoading(true);
-      try {
-        createPlayer({ name: playerName, lootedItems: [] }).then(
-          (result: Result) => {
-            if (result.success) {
-              toast(result.message);
-              setPlayerName("");
+    try {
+      createPlayer({ name: playerName, lootedItems: [] }).then(
+        (result: Result) => {
+          if (result.success) {
+            toast(result.message);
+            setPlayerName("");
 
-              if (modalRef.current) {
-                const modalInstance = bootstrap.Modal.getInstance(modalRef.current);
-                modalInstance?.hide();
-              }
-            } else {
-              toast.warn(result.message);
+            if (modalRef.current) {
+              const modalInstance = bootstrap.Modal.getInstance(
+                modalRef.current
+              );
+              modalInstance?.hide();
             }
+          } else {
+            toast.warn(result.message);
           }
-        );
-      } catch {
-        console.error();
-      }
-      setLoading(false);
+        }
+      );
+    } catch {
+      console.error();
+    }
+    setLoading(false);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -49,15 +58,15 @@ const PlayerModal = () => {
   };
 
   useEffect(() => {
-
     if (!modalRef.current) return;
 
     const modalElement = modalRef.current;
 
     const handleClose = () => {
+      modalElement.setAttribute("aria-hidden", "true");
       setIsModalOpen(false);
-      setPlayerName('');
-    }
+      setPlayerName("");
+    };
 
     modalElement.addEventListener("hidden.bs.modal", handleClose);
 
@@ -102,7 +111,7 @@ const PlayerModal = () => {
                     value={playerName}
                     onChange={(e) => setPlayerName(e.target.value)}
                     onKeyDown={handleKeyPress}
-                    autoComplete="off"
+                    autoComplete="new-player"
                   />
                   <button
                     className="btn btn-outline-light toggle-password"

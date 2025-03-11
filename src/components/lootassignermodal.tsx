@@ -23,9 +23,16 @@ const LootAssignerModal = ({ selectedItem }: LootAssignerModalProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const openModal = () => {
-    if (modalRef.current) {
-      const modal = new bootstrap.Modal(modalRef.current);
+    const modalElement = modalRef.current;
+
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
       setSelectedPlayers([]);
+
+      modalElement.addEventListener("shown.bs.modal", () => {
+        modalElement.removeAttribute("aria-hidden");
+      });
+
       modal.show();
       setIsModalOpen(true);
     }
@@ -92,7 +99,11 @@ const LootAssignerModal = ({ selectedItem }: LootAssignerModalProps) => {
 
     const modalElement = modalRef.current;
 
-    const handleClose = () => setIsModalOpen(false);
+    const handleClose = () => {
+      modalElement.setAttribute("aria-hidden", "true");
+      setIsModalOpen(false);
+    };
+
     modalElement.addEventListener("hidden.bs.modal", handleClose);
 
     return () => {
