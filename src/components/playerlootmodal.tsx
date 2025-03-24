@@ -25,6 +25,25 @@ const PlayerLootModal = ({ selectedPlayer }: PlayerLootModalProps) => {
     }
   };
 
+  const formatDate = (date: Date | undefined): string => {
+    if (!date) return "";
+
+    const parsedDate = typeof date === "string" ? new Date(date) : date;
+
+    if (isNaN(parsedDate.getTime())) return "";
+
+    const utcMinus6 = new Date(parsedDate.getTime() - 6 * 60 * 60 * 1000);
+
+    const day = String(utcMinus6.getDate()).padStart(2, "0");
+    const month = String(utcMinus6.getMonth() + 1).padStart(2, "0");
+    const year = utcMinus6.getFullYear();
+
+    const hours = String(utcMinus6.getHours()).padStart(2, "0");
+    const minutes = String(utcMinus6.getMinutes()).padStart(2, "0");
+
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
+  };
+
   useEffect(() => {
     if (selectedPlayer) {
       openModal();
@@ -56,7 +75,7 @@ const PlayerLootModal = ({ selectedPlayer }: PlayerLootModalProps) => {
       tabIndex={-1}
       aria-hidden="true"
     >
-      <div className="modal-dialog">
+      <div className="modal-dialog modal-lg">
         <div className="modal-content bg-dark text-light">
           <div className="modal-header border-secondary">
             <h5 className="modal-title">{selectedPlayer?.name}'s Loot</h5>
@@ -68,19 +87,34 @@ const PlayerLootModal = ({ selectedPlayer }: PlayerLootModalProps) => {
             ></button>
           </div>
           <div className="modal-body">
-            {selectedPlayer?.lootedItems.length ? (
-              <ul className="loot-list">
-                {selectedPlayer.lootedItems.map((item) => (
-                  <li key={item.tableId} className="mt-2">
-                    <a href="#" data-wowhead={`item=${item.id}`}>
-                      {item.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>Player without loot.</p>
-            )}
+            <table className="table table-dark table-striped">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Assigned By</th>
+                  <th>Date of Assignment</th>
+                </tr>
+              </thead>
+              <tbody>
+                {selectedPlayer?.lootedItems.length ? (
+                  selectedPlayer.lootedItems.map((item, index) => (
+                    <tr key={index}>
+                      <td>
+                        <a href="#" data-wowhead={`item=${item.id}`}>
+                          {item.name}
+                        </a>
+                      </td>
+                      <td>{item.assignedBy}</td>
+                      <td>{formatDate(item.assignDate)}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={3}>Player without loot</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
           <div className="modal-footer border-secondary">
             <button

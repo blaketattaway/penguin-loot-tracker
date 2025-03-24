@@ -8,6 +8,8 @@ export interface Item {
     tableId: string;
     id: number;
     name: string;
+    assignDate?: Date;
+    assignedBy?: string;
 }
 
 export interface PriorityEntry {
