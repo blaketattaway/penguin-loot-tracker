@@ -1,15 +1,8 @@
-import {
-  ReactNode,
-  useEffect,
-  useState,
-} from "react";
-import { AuthContext } from "./authcontext";
+import { PropsWithChildren, useEffect, useState } from "react";
+import { AuthContext } from "../hooks/useAuth";
 
-
-
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [isValid, setIsValid] = useState(false);
-
   const checkTokenValidity = () => {
     const token = localStorage.getItem("plt-token");
     const expiration = localStorage.getItem("plt-token-expiration");

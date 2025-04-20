@@ -1,10 +1,21 @@
-import { useContext } from "react";
-import { AuthContext } from "../context/authcontext";
+import { createContext, useContext } from "react";
 
+interface AuhtContextType {
+  isValid: boolean;
+  checkTokenValidity: () => void;
+}
 
-export const useAuth = () => {
-    const context = useContext(AuthContext);
-    if (!context) throw new Error("useAuth should use within <AuthProvider>");
-    return context;
-  };
-  
+const initialContext: AuhtContextType = {
+  isValid: false,
+  checkTokenValidity: () => {},
+};
+
+export const AuthContext = createContext<AuhtContextType>(initialContext);
+
+const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) throw new Error("useAuth should use within <AuthProvider>");
+  return context;
+};
+
+export default useAuth;
