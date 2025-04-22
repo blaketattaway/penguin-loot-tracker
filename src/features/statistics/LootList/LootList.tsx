@@ -1,7 +1,7 @@
 import { List, ThemeIcon, Anchor, Text } from "@mantine/core";
 import { IconStar } from "@tabler/icons-react";
+import { Item } from "../../../hooks/endpoints";
 
-import { Item } from "../../../interfaces/player.interface";
 
 interface ItemListProps {
   items: Item[];

@@ -35,6 +35,8 @@ const LoginModal = ({ onClose }: LoginModalProps) => {
       <form
         onSubmit={form.onSubmit(async (values) => {
           handleLogin(values.password);
+
+          onClose();
         })}
       >
         <Text>Input password to login to assign items.</Text>

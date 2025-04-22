@@ -11,10 +11,9 @@ import {
 import { Modal, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
-import { Player } from "../../../interfaces/player.interface";
-
 import LootPerPlayerTooltip from "../LootPerPlayerTooltip/LootPerPlayerTooltip";
 import ItemList from "../LootList/LootList";
+import { Player } from "../../../hooks/endpoints";
 
 interface LootPerPlayerChartProps {
   data: Player[];

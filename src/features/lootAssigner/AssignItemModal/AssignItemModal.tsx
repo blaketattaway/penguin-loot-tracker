@@ -3,9 +3,9 @@ import {
   Group,
   Loader,
   Modal,
-  Select,
+  MultiSelect,
 } from "@mantine/core";
-import { useAssignItemMutation, useGetPlayersQuery, WowheadItem } from "../../../hooks/endpoints";
+import { AssignedItem, useAssignItemMutation, useGetPlayersQuery, WowheadItem } from "../../../hooks/endpoints";
 import { useMemo } from "react";
 import { useForm } from "@mantine/form";
 
@@ -17,12 +17,12 @@ interface AddPlayerModalProps {
 const AssignItemModal = ({ onClose, data }: AddPlayerModalProps) => {
   const { data: players, status } = useGetPlayersQuery();
   const { mutateAsync: assignItemAsync } = useAssignItemMutation();
-  const form = useForm({
+  const form = useForm<{selectedPlayers: string[]}>({
     initialValues: {
-      player: "",
+      selectedPlayers: [],
     },
     validate: {
-      player: (value) => (value?.length ? null : "Player is required"),
+      selectedPlayers: (value) => (value?.length ? null : "Player is required"),
     },
     mode: "uncontrolled",
   });
@@ -40,18 +40,35 @@ const AssignItemModal = ({ onClose, data }: AddPlayerModalProps) => {
     players && (
       <Modal title="Assign Item" centered onClose={onClose} opened>
         <form onSubmit={form.onSubmit(async (values) => {
-          await assignItemAsync({
-            tableId: values.player,
-            id: data.id,
-            name: data.name,
+
+          const itemsToAssign: AssignedItem[] = values.selectedPlayers.map((id) => {
+
+            const match = playerOptions?.find(p => p.value === id);
+            
+            return {
+              player: {
+                id,
+                name: match?.label ?? "",
+                lootedCount: 0,
+                lootedItems: []
+              },
+              item: {
+                id: data.id,
+                name: data.name
+              }
+            }
           });
+
+          await assignItemAsync(itemsToAssign);
+
+          onClose();
         })}>
-          <Select
-            label="Player"
-            placeholder="Select player..."
+          <MultiSelect
+            label="Player(s)"
+            placeholder="Select player(s)..."
             searchable
             data={playerOptions}
-            {...form.getInputProps("player", { type: "input" })}
+            {...form.getInputProps("selectedPlayers", { type: "input" })}
           />
           <Group mt="md" justify="right" gap="xs">
             <Button variant="outline" size="xs" onClick={onClose}>

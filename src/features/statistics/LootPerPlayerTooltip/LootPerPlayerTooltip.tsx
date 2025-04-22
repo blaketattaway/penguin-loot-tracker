@@ -1,7 +1,7 @@
 import { Paper, Stack, Title, Group, Indicator, Text } from "@mantine/core";
 
-import { Player } from "../../../interfaces/player.interface";
 import ItemList from "../LootList/LootList";
+import { Player } from "../../../hooks/endpoints";
 
 interface LootPerPlayerTooltipProps {
   payload: Player | null;

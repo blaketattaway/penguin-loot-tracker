@@ -15,12 +15,12 @@ import LoginModal from "../LoginModal/LoginModal";
 const LINKS = [
   {
     label: "Statistics",
-    url: "/penguin-loot-tracker/statistics",
+    url: "/statistics",
     icon: IconChartBar,
   },
   {
     label: "Loot Assigner",
-    url: "/penguin-loot-tracker/loot-asigner",
+    url: "/loot-asigner",
     icon: IconDeviceIpadCheck,
   },
 ];

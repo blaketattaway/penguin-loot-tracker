@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { Table } from "@mantine/core";
 
-import { Player } from "../../../interfaces/player.interface";
 import { calculatePriority } from "../../../utils";
+import { Player } from "../../../hooks/endpoints";
 
 interface PriorirtyTrackerTableProps {
   data: Player[];

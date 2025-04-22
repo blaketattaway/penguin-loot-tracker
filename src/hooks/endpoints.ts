@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 export interface Item {
-  tableId: string;
+  tableId?: string;
   id: number;
   name: string;
 }
@@ -44,6 +44,11 @@ export interface Player {
   name: string;
   lootedItems: Item[];
   lootedCount: number;
+}
+
+export interface AssignedItem {
+  player: Player;
+  item: Item;
 }
 
 const HEADERS: HeadersInit = {
@@ -181,7 +186,7 @@ export const useAddPlayerMutation = () => {
 export const useAssignItemMutation = () => {
   return useMutation({
     mutationKey: ["assignItem"],
-    mutationFn: async (item: Item): Promise<AddPlayerResult> => {
+    mutationFn: async (items: AssignedItem[]): Promise<AddPlayerResult> => {
       const url = `${API_URL}/lootassigner/assign`;
 
       const rHeaders = {
@@ -192,7 +197,7 @@ export const useAssignItemMutation = () => {
       const response = await fetch(url, {
         method: "POST",
         headers: rHeaders,
-        body: JSON.stringify(item),
+        body: JSON.stringify(items),
       });
 
       if (!response.ok) throw new Error(`Error: ${response.status}`);
