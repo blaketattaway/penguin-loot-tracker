@@ -6,15 +6,15 @@ import LootAssigner from "../../lootAssigner/LootAssigner";
 const Router = () => {
   return (
     <Routes>
-      <Route path="/penguin-loot-tracker/statistics" element={<Statistics />} />
+      <Route path="/statistics" element={<Statistics />} />
 
       <Route
-        path="/penguin-loot-tracker/loot-asigner"
+        path="/loot-asigner"
         element={<LootAssigner />}
       />
       <Route
         path="*"
-        element={<Navigate to="/penguin-loot-tracker/statistics" />}
+        element={<Navigate to="/statistics" />}
       />
     </Routes>
   );
