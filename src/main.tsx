@@ -16,7 +16,7 @@ const queryClient = new QueryClient();
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <HashRouter basename="/penguin-loot-tracker">
+      <HashRouter>
         <AuthProvider>
           <ThemeProvider>
             <App />
