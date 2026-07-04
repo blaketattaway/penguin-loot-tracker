@@ -1,4 +1,5 @@
 import { Anchor, Group, Pagination, Stack, Table, Button } from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
 
 import useAuth from "../../../hooks/useAuth";
 
@@ -37,7 +38,8 @@ const LootTable = ({
           <Table.Td>
             <Button
               size="xs"
-              variant="outline"
+              variant="light"
+              leftSection={<IconPlus size={14} />}
               onClick={() => onAssignItemClick(item)}
             >
               Assign
@@ -50,7 +52,7 @@ const LootTable = ({
 
   return (
     <Stack>
-      <Table striped highlightOnHover withColumnBorders withTableBorder>
+      <Table striped highlightOnHover verticalSpacing="sm">
         <Table.Thead>
           <Table.Tr>
             <Table.Th>Item</Table.Th>

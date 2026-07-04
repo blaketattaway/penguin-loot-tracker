@@ -8,6 +8,8 @@ import ThemeProvider from "./theme/Theme";
 
 import "@mantine/core/styles.css";
 import "@mantine/charts/styles.css";
+import "@mantine/notifications/styles.css";
+import "./theme/global.css";
 
 import { AuthProvider } from "./context/AuthContext";
 

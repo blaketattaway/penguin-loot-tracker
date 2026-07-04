@@ -1,0 +1,115 @@
+/* ============================================================
+   Penguin Loot Tracker — global styles & motion primitives
+   ============================================================ */
+
+:root {
+  /* Strong custom easing curves (built-in CSS easings are too weak) */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Atmosphere: torch-glow gold at top, faint arcane glow at the base. */
+body {
+  background:
+    radial-gradient(1100px 560px at 100% -12%, rgba(255, 179, 0, 0.07), transparent 60%),
+    radial-gradient(820px 480px at -12% 112%, rgba(113, 48, 255, 0.05), transparent 55%),
+    var(--mantine-color-body);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---- Custom scrollbar ---------------------------------------------------- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--mantine-color-dark-4) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--mantine-color-dark-4);
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--mantine-color-dark-3);
+  background-clip: content-box;
+}
+
+/* ---- Press feedback: pressable elements react to touch ------------------ */
+.mantine-Button-root,
+.mantine-ActionIcon-root,
+.mantine-CloseButton-root {
+  transition: transform 130ms var(--ease-out), background-color 130ms var(--ease-out),
+    border-color 130ms var(--ease-out), box-shadow 130ms var(--ease-out);
+}
+.mantine-Button-root:active:not([data-disabled]):not(:disabled),
+.mantine-ActionIcon-root:active:not([data-disabled]):not(:disabled),
+.mantine-CloseButton-root:active {
+  transform: scale(0.97);
+}
+
+/* Nav links: gentler, and slide slightly on hover */
+.mantine-NavLink-root {
+  transition: background-color 140ms var(--ease-out), transform 140ms var(--ease-out);
+  border-radius: var(--mantine-radius-md);
+}
+.mantine-NavLink-root:active {
+  transform: scale(0.985);
+}
+
+/* Cards lift subtly on hover when interactive */
+.plt-card-hover {
+  transition: transform 200ms var(--ease-out), border-color 200ms var(--ease-out),
+    box-shadow 200ms var(--ease-out);
+}
+.plt-card-hover:hover {
+  transform: translateY(-2px);
+  border-color: var(--mantine-color-gold-6);
+}
+
+/* ---- Entrance animations ------------------------------------------------ */
+@keyframes plt-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.plt-enter {
+  animation: plt-fade-up 440ms var(--ease-out) both;
+}
+
+/* Stagger children: add data-stagger index via nth-child */
+.plt-stagger > * {
+  animation: plt-fade-up 440ms var(--ease-out) both;
+}
+.plt-stagger > *:nth-child(1) { animation-delay: 0ms; }
+.plt-stagger > *:nth-child(2) { animation-delay: 55ms; }
+.plt-stagger > *:nth-child(3) { animation-delay: 110ms; }
+.plt-stagger > *:nth-child(4) { animation-delay: 165ms; }
+.plt-stagger > *:nth-child(5) { animation-delay: 220ms; }
+.plt-stagger > *:nth-child(6) { animation-delay: 275ms; }
+
+/* ---- Accessibility: reduced motion keeps opacity, drops movement -------- */
+@media (prefers-reduced-motion: reduce) {
+  @keyframes plt-fade-up {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .mantine-Button-root:active,
+  .mantine-ActionIcon-root:active,
+  .mantine-CloseButton-root:active,
+  .mantine-NavLink-root:active,
+  .plt-card-hover:hover {
+    transform: none;
+  }
+}

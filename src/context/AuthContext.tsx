@@ -9,6 +9,12 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     setIsValid(!!token && !!expiration && new Date(expiration) > new Date());
   };
 
+  const logout = () => {
+    localStorage.removeItem("plt-token");
+    localStorage.removeItem("plt-token-expiration");
+    setIsValid(false);
+  };
+
   useEffect(() => {
     checkTokenValidity();
 
@@ -19,7 +25,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isValid, checkTokenValidity }}>
+    <AuthContext.Provider value={{ isValid, checkTokenValidity, logout }}>
       {children}
     </AuthContext.Provider>
   );

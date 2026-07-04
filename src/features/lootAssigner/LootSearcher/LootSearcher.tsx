@@ -21,15 +21,15 @@ const LootSearcher = ({ onFormSubmit, searchQuery }: LootSearcherProps) => {
         onFormSubmit(values.searchValue);
       })}
     >
-      <Group justify="apart" mb="md">
+      <Group gap="sm" align="flex-end" wrap="nowrap">
         <TextInput
           key={form.key("searchValue")}
-          size="xs"
-          placeholder="Item's name..."
+          style={{ flex: 1 }}
+          placeholder="e.g. Thunderfury, Blessed Blade..."
           leftSection={<IconSearch size={18} />}
           {...form.getInputProps("searchValue", { type: "input" })}
         />
-        <Button type="submit" variant="outline" size="xs">
+        <Button type="submit" leftSection={<IconSearch size={18} />}>
           Search
         </Button>
       </Group>

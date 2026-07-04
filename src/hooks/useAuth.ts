@@ -3,11 +3,13 @@ import { createContext, useContext } from "react";
 interface AuhtContextType {
   isValid: boolean;
   checkTokenValidity: () => void;
+  logout: () => void;
 }
 
 const initialContext: AuhtContextType = {
   isValid: false,
   checkTokenValidity: () => {},
+  logout: () => {},
 };
 
 export const AuthContext = createContext<AuhtContextType>(initialContext);

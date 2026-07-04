@@ -16,7 +16,7 @@ const LootPerPlayerTooltip = ({ payload }: LootPerPlayerTooltipProps) => {
         <Title order={4}>{payload.name}'s Loot</Title>
         <Group px="5px" justify="space-between">
           <Group>
-            <Indicator />
+            <Indicator color="gold" />
             <Text>Total Loot</Text>
           </Group>
           <Text>{payload.lootedCount}</Text>

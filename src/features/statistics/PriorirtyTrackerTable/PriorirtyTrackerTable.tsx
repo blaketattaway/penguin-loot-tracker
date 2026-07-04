@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Table } from "@mantine/core";
+import { Badge, Table, Text } from "@mantine/core";
 
 import { calculatePriority } from "../../../utils";
 import { Player } from "../../../hooks/endpoints";
@@ -17,7 +17,16 @@ const PriorirtyTrackerTable = ({ data }: PriorirtyTrackerTableProps) => {
   const renderRows = () => {
     return playersPriortyEntris.map((element) => (
       <Table.Tr key={element.priority}>
-        <Table.Td>{element.priority}</Table.Td>
+        <Table.Td>
+          <Badge
+            size="lg"
+            radius="sm"
+            variant={element.priority === 1 ? "filled" : "light"}
+            color="gold"
+          >
+            #{element.priority}
+          </Badge>
+        </Table.Td>
         <Table.Td>
           {element.items.map((item, index) => (
             <span key={index}>
@@ -30,11 +39,19 @@ const PriorirtyTrackerTable = ({ data }: PriorirtyTrackerTableProps) => {
     ));
   };
 
+  if (playersPriortyEntris.length === 0) {
+    return (
+      <Text c="dimmed" size="sm" py="md">
+        No priority data yet.
+      </Text>
+    );
+  }
+
   return (
-    <Table striped withColumnBorders>
+    <Table verticalSpacing="sm" highlightOnHover>
       <Table.Thead>
         <Table.Tr>
-          <Table.Th w={100}>Priority</Table.Th>
+          <Table.Th w={90}>Priority</Table.Th>
           <Table.Th>Players</Table.Th>
         </Table.Tr>
       </Table.Thead>

@@ -8,7 +8,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Modal, Text } from "@mantine/core";
+import { Modal, Text, useMantineTheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 import LootPerPlayerTooltip from "../LootPerPlayerTooltip/LootPerPlayerTooltip";
@@ -20,6 +20,7 @@ interface LootPerPlayerChartProps {
 }
 
 const LootPerPlayerChart = ({ data }: LootPerPlayerChartProps) => {
+  const theme = useMantineTheme();
   const [opened, { open, close }] = useDisclosure(false);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
@@ -54,7 +55,7 @@ const LootPerPlayerChart = ({ data }: LootPerPlayerChartProps) => {
         >
           <CartesianGrid
             horizontal={false}
-            stroke="#444"
+            stroke={theme.colors.dark[4]}
             strokeDasharray="4 4"
           />
           <XAxis
@@ -62,7 +63,7 @@ const LootPerPlayerChart = ({ data }: LootPerPlayerChartProps) => {
             type="number"
             domain={[0, "dataMax"]}
             allowDecimals={false}
-            tick={{ fontSize: 12, fill: "var(--mantine-color-gray-6)" }}
+            tick={{ fontSize: 12, fill: theme.colors.gray[6] }}
             tickCount={data.length}
           />
           <YAxis
@@ -72,16 +73,14 @@ const LootPerPlayerChart = ({ data }: LootPerPlayerChartProps) => {
             tick={{
               fontSize: 12,
               textAnchor: "end",
-              fill: "var(--mantine-color-gray-6)",
+              fill: theme.colors.gray[5],
             }}
             interval={0}
           />
           <Tooltip
             cursor={{
-              fill: "transparent",
-              stroke: "#fff",
-              strokeWidth: 0.5,
-              strokeDasharray: "0 4 3 4",
+              fill: theme.colors.gold[6],
+              fillOpacity: 0.1,
             }}
             animationDuration={0}
             content={(props) => (
@@ -92,9 +91,11 @@ const LootPerPlayerChart = ({ data }: LootPerPlayerChartProps) => {
           />
           <Bar
             dataKey="lootedCount"
-            fill="#2196F3"
-            barSize={12}
-            activeBar={{ fill: "var(--mantine-color-blue-8)" }}
+            fill={theme.colors.gold[6]}
+            barSize={14}
+            radius={[0, 6, 6, 0]}
+            style={{ cursor: "pointer" }}
+            activeBar={{ fill: theme.colors.gold[4] }}
           />
         </BarChart>
       </ResponsiveContainer>
