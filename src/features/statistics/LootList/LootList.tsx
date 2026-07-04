@@ -9,6 +9,10 @@ interface ItemListProps {
 }
 
 const ItemList = ({ items, anchor }: ItemListProps) => {
+  const uniqueItems = Array.from(new Set(items.map(item => item.id))).map(id => {
+    return items.find(item => item.id === id)!;
+  });
+
   return (
     <List
       spacing="xs"
@@ -19,7 +23,7 @@ const ItemList = ({ items, anchor }: ItemListProps) => {
         </ThemeIcon>
       }
     >
-      {items.map((item) => (
+      {uniqueItems.map((item) => (
         <List.Item key={item.id}>
           {anchor ? (
             <Anchor

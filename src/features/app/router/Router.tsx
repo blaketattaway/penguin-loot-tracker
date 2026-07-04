@@ -7,7 +7,6 @@ const Router = () => {
   return (
     <Routes>
       <Route path="/statistics" element={<Statistics />} />
-
       <Route
         path="/loot-asigner"
         element={<LootAssigner />}

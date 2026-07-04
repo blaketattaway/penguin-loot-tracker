@@ -1,9 +1,10 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import { defineConfig } from "vite";
+import { viteSingleFile } from "vite-plugin-singlefile";
+import react from "@vitejs/plugin-react-swc";
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  appType: 'spa',
-  base: '/penguin-loot-tracker'
-})
+  plugins: [react(), viteSingleFile()],
+  appType: "spa",
+  base: "/penguin-loot-tracker",
+});
