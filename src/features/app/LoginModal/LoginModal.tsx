@@ -12,6 +12,7 @@ import {
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { IconKey } from "@tabler/icons-react";
+import { useTranslation } from "react-i18next";
 
 import Logo from "../../../assets/penguin-logo.webp";
 
@@ -23,6 +24,7 @@ interface LoginModalProps {
 }
 
 const LoginModal = ({ onClose }: LoginModalProps) => {
+  const { t } = useTranslation();
   const { mutateAsync: loginAsync, isPending } = useLoginMutation();
   const { checkTokenValidity } = useAuth();
   const form = useForm({
@@ -30,7 +32,7 @@ const LoginModal = ({ onClose }: LoginModalProps) => {
       password: "",
     },
     validate: {
-      password: (value) => (value.length ? null : "Password is required"),
+      password: (value) => (value.length ? null : t("login.passwordRequired")),
     },
     mode: "controlled",
   });
@@ -79,10 +81,10 @@ const LoginModal = ({ onClose }: LoginModalProps) => {
             />
           </Box>
           <Title order={3} fw={800} fz={22}>
-            Brotherhood access
+            {t("login.title")}
           </Title>
           <Text size="sm" c="dimmed" maw={"34ch"}>
-            Enter the Brotherhood's access code to unlock loot assignment.
+            {t("login.subtitle")}
           </Text>
         </Stack>
 
@@ -91,34 +93,34 @@ const LoginModal = ({ onClose }: LoginModalProps) => {
             try {
               await handleLogin(values.password);
               notifications.show({
-                title: "Welcome back",
-                message: "You can now assign loot.",
+                title: t("login.successTitle"),
+                message: t("login.successMessage"),
                 color: "gold",
               });
               onClose();
             } catch {
-              form.setFieldError("password", "Invalid access code");
+              form.setFieldError("password", t("login.invalidAccessCode"));
               notifications.show({
-                title: "Login failed",
-                message: "That access code didn't work. Try again.",
+                title: t("login.failedTitle"),
+                message: t("login.failedMessage"),
                 color: "red",
               });
             }
           })}
         >
           <PasswordInput
-            label="Access code"
-            placeholder="Enter your code"
+            label={t("login.accessCodeLabel")}
+            placeholder={t("login.accessCodePlaceholder")}
             leftSection={<IconKey size={16} stroke={1.5} />}
             data-autofocus
             {...form.getInputProps("password", { type: "input" })}
           />
           <Group gap="xs" justify="right" mt="lg">
             <Button onClick={onClose} variant="default">
-              Cancel
+              {t("login.cancel")}
             </Button>
             <Button type="submit" loading={isPending}>
-              Unlock
+              {t("login.unlock")}
             </Button>
           </Group>
         </form>

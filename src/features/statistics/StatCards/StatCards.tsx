@@ -6,6 +6,7 @@ import {
   IconScale,
   IconUsers,
 } from "@tabler/icons-react";
+import { useTranslation } from "react-i18next";
 
 import { Player } from "../../../hooks/endpoints";
 
@@ -42,6 +43,7 @@ const StatCard = ({
 );
 
 const StatCards = ({ data }: StatCardsProps) => {
+  const { t } = useTranslation();
   const stats = useMemo(() => {
     const players = data.length;
     const totalLoot = data.reduce((sum, p) => sum + p.lootedCount, 0);
@@ -56,25 +58,25 @@ const StatCards = ({ data }: StatCardsProps) => {
   return (
     <SimpleGrid cols={{ base: 1, xs: 2, lg: 4 }} className="plt-stagger">
       <StatCard
-        label="Players"
+        label={t("statCards.players")}
         value={stats.players}
         color="blue"
         icon={IconUsers}
       />
       <StatCard
-        label="Total loot"
+        label={t("statCards.totalLoot")}
         value={stats.totalLoot}
         color="gold"
         icon={IconSparkles}
       />
       <StatCard
-        label="Avg per player"
+        label={t("statCards.avgPerPlayer")}
         value={stats.avg}
         color="teal"
         icon={IconScale}
       />
       <StatCard
-        label="Top looter"
+        label={t("statCards.topLooter")}
         value={stats.top?.name ?? "—"}
         color="arcane"
         icon={IconCrown}

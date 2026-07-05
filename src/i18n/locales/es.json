@@ -1,0 +1,152 @@
+{
+  "app": {
+    "tagline": "Penguin Brotherhood",
+    "github": "GitHub",
+    "forTheGuild": "Para la hermandad",
+    "openNavigation": "Abrir navegación",
+    "closeNavigation": "Cerrar navegación",
+    "loading": "Preparando la bóveda de botín…"
+  },
+  "language": {
+    "label": "Idioma",
+    "english": "English",
+    "spanish": "Español"
+  },
+  "nav": {
+    "welcome": "Inicio",
+    "statistics": "Estadísticas",
+    "lootAssigner": "Asignar botín",
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "signedOutTitle": "Sesión cerrada",
+    "signedOutMessage": "Ya no puedes asignar botín hasta que vuelvas a iniciar sesión."
+  },
+  "welcome": {
+    "eyebrow": "Penguin Brotherhood",
+    "titleLead": "Cada botín que gana la hermandad,",
+    "titleHighlight": "registrado.",
+    "subtitle": "Asigna el botín de forma justa, mantén un registro claro de quién recibió qué y resuelve las prioridades sin discusiones en el chat de raid.",
+    "features": {
+      "statistics": {
+        "title": "Ve el panorama completo",
+        "body": "Distribución del botín, seguimiento de prioridades e historial por jugador de cada hermano.",
+        "cta": "Ver estadísticas"
+      },
+      "assign": {
+        "title": "Asigna botín en segundos",
+        "body": "Busca cualquier objeto del catálogo de Blizzard y entrégaselo al raider correcto.",
+        "cta": "Asignar botín"
+      }
+    },
+    "accessNote": "Cualquiera de la hermandad puede navegar. Para asignar botín se necesita el código de acceso de la hermandad."
+  },
+  "login": {
+    "title": "Acceso de la hermandad",
+    "subtitle": "Ingresa el código de acceso de la hermandad para desbloquear la asignación de botín.",
+    "accessCodeLabel": "Código de acceso",
+    "accessCodePlaceholder": "Ingresa tu código",
+    "passwordRequired": "La contraseña es obligatoria",
+    "invalidAccessCode": "Código de acceso inválido",
+    "cancel": "Cancelar",
+    "unlock": "Desbloquear",
+    "successTitle": "Bienvenido de nuevo",
+    "successMessage": "Ya puedes asignar botín.",
+    "failedTitle": "Error al iniciar sesión",
+    "failedMessage": "Ese código de acceso no funcionó. Inténtalo de nuevo."
+  },
+  "lootAssigner": {
+    "title": "Asignar botín",
+    "subtitle": "Busca un objeto y registra quién lo obtuvo.",
+    "addPlayer": "Agregar jugador",
+    "login": "Iniciar sesión",
+    "searchItems": "Buscar objetos",
+    "filterPlaceholder": "Filtra estos resultados (ej. Will)",
+    "clearFilter": "Limpiar filtro",
+    "empty": {
+      "searchTitle": "Busca un objeto para asignar",
+      "searchHint": "Escribe el nombre de un objeto arriba para buscarlo en la base de datos de Blizzard, luego asígnalo a uno o más jugadores.",
+      "errorTitle": "La búsqueda falló",
+      "errorHint": "No pudimos conectar con la base de datos de objetos de Blizzard para buscar \"{{query}}\". Es un problema de conexión, no de ortografía — inténtalo de nuevo.",
+      "retry": "Reintentar",
+      "noItemsTitle": "No se encontraron objetos",
+      "noItemsHint": "Nada coincidió con \"{{query}}\". Revisa la ortografía o prueba con un término más amplio.",
+      "noMatchesTitle": "Sin coincidencias",
+      "noMatchesHint": "Ninguno de los {{count}} resultados para \"{{query}}\" contiene \"{{filter}}\"."
+    }
+  },
+  "lootSearcher": {
+    "placeholder": "ej. Thunderfury, Blessed Blade...",
+    "search": "Buscar"
+  },
+  "lootTable": {
+    "item": "Objeto",
+    "actions": "Acciones",
+    "assign": "Asignar"
+  },
+  "addPlayer": {
+    "title": "Agregar jugador",
+    "description": "Agrega un personaje a la lista de la hermandad para que pueda recibir botín.",
+    "nameLabel": "Nombre del jugador",
+    "namePlaceholder": "Nombre del personaje",
+    "nameRequired": "El nombre del jugador es obligatorio",
+    "cancel": "Cancelar",
+    "submit": "Agregar jugador",
+    "successTitle": "Jugador agregado",
+    "successMessage": "{{name}} se unió a la lista.",
+    "errorTitle": "No se pudo agregar al jugador"
+  },
+  "assignItem": {
+    "title": "Asignar objeto",
+    "selectAtLeastOne": "Selecciona al menos un jugador",
+    "confirmTitle": "Confirma este registro de botín",
+    "confirmWarning": "Esto no se puede deshacer desde la app. Revísalo bien antes de registrar.",
+    "recordingPrefix": "Registrando",
+    "recordingSuffix": "como obtenido por:",
+    "back": "Atrás",
+    "confirmAssign": "Confirmar asignación",
+    "assigningPrefix": "Asignando",
+    "assigningSuffix": ". Elige quién lo obtuvo.",
+    "playersLabel": "Jugador(es)",
+    "playersPlaceholder": "Selecciona jugador(es)...",
+    "cancel": "Cancelar",
+    "review": "Revisar",
+    "successTitle": "Botín asignado",
+    "errorTitle": "No se pudo asignar el botín"
+  },
+  "statistics": {
+    "title": "Estadísticas",
+    "subtitle": "Distribución del botín y prioridad de reparto en la hermandad.",
+    "errorTitle": "No se pudo cargar la lista de la hermandad",
+    "errorMessage": "No pudimos conectar con la bóveda de botín. Revisa tu conexión e inténtalo de nuevo.",
+    "retry": "Reintentar",
+    "emptyTitle": "Aún no hay jugadores",
+    "emptyMessage": "Agrega jugadores desde Asignar botín para empezar a registrar quién obtuvo qué.",
+    "lootPerPlayer": "Botín por jugador",
+    "priorityTracker": "Seguimiento de prioridad"
+  },
+  "statCards": {
+    "players": "Jugadores",
+    "totalLoot": "Botín total",
+    "avgPerPlayer": "Promedio por jugador",
+    "topLooter": "Mayor botín"
+  },
+  "lootList": {
+    "empty": "Nada obtenido aún — la bóveda espera."
+  },
+  "lootChart": {
+    "playersLoot": "Botín de {{name}}",
+    "selectLabel": "Ver el botín de un jugador",
+    "selectPlaceholder": "Selecciona un jugador…",
+    "summary": "Botín por jugador: "
+  },
+  "lootTooltip": {
+    "playersLoot": "Botín de {{name}}",
+    "totalLoot": "Botín total",
+    "items": "Objetos"
+  },
+  "priorityTable": {
+    "empty": "Aún no hay datos de prioridad.",
+    "priority": "Prioridad",
+    "players": "Jugadores"
+  }
+}

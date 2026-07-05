@@ -15,6 +15,7 @@ import { notifications } from "@mantine/notifications";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { useForm } from "@mantine/form";
+import { useTranslation } from "react-i18next";
 
 import {
   AssignedItem,
@@ -31,6 +32,7 @@ interface AssignItemModalProps {
 type SelectedPlayer = { id: string; name: string };
 
 const AssignItemModal = ({ onClose, data }: AssignItemModalProps) => {
+  const { t } = useTranslation();
   const { data: players, status } = useGetPlayersQuery();
   const { mutateAsync: assignItemAsync, isPending } = useAssignItemMutation();
   const queryClient = useQueryClient();
@@ -43,7 +45,7 @@ const AssignItemModal = ({ onClose, data }: AssignItemModalProps) => {
     },
     validate: {
       selectedPlayers: (value) =>
-        value?.length ? null : "Select at least one player",
+        value?.length ? null : t("assignItem.selectAtLeastOne"),
     },
     mode: "uncontrolled",
   });
@@ -59,21 +61,22 @@ const AssignItemModal = ({ onClose, data }: AssignItemModalProps) => {
   const commitAssign = async (selected: SelectedPlayer[]) => {
     const itemsToAssign: AssignedItem[] = selected.map(({ id, name }) => ({
       player: { id, name, lootedCount: 0, lootedItems: [] },
-      item: { id: data.id, name: data.name },
+      // Persist the canonical English name so stored data stays language-neutral.
+      item: { id: data.id, name: data.nameEn },
     }));
 
     try {
       await assignItemAsync(itemsToAssign);
       await queryClient.invalidateQueries({ queryKey: ["players"] });
       notifications.show({
-        title: "Loot assigned",
+        title: t("assignItem.successTitle"),
         message: `${data.name} → ${selected.map((p) => p.name).join(", ")}.`,
         color: "gold",
       });
       onClose();
     } catch (error) {
       notifications.show({
-        title: "Couldn't assign loot",
+        title: t("assignItem.errorTitle"),
         message: (error as Error).message,
         color: "red",
       });
@@ -81,7 +84,7 @@ const AssignItemModal = ({ onClose, data }: AssignItemModalProps) => {
   };
 
   return (
-    <Modal title="Assign item" onClose={onClose} opened>
+    <Modal title={t("assignItem.title")} onClose={onClose} opened>
       {status === "pending" ? (
         <Center py="lg">
           <Loader color="gold" />
@@ -92,17 +95,17 @@ const AssignItemModal = ({ onClose, data }: AssignItemModalProps) => {
             variant="light"
             color="gold"
             icon={<IconAlertTriangle size={18} />}
-            title="Confirm this loot record"
+            title={t("assignItem.confirmTitle")}
           >
-            This can't be undone from the app. Double-check before recording.
+            {t("assignItem.confirmWarning")}
           </Alert>
           <div>
             <Text size="sm" c="dimmed" mb={4}>
-              Recording{" "}
+              {t("assignItem.recordingPrefix")}{" "}
               <Text span fw={700} c="gold.4">
                 {data.name}
               </Text>{" "}
-              as looted by:
+              {t("assignItem.recordingSuffix")}
             </Text>
             <List size="sm" withPadding>
               {pending.map((p) => (
@@ -117,10 +120,10 @@ const AssignItemModal = ({ onClose, data }: AssignItemModalProps) => {
               onClick={() => setPending(null)}
               disabled={isPending}
             >
-              Back
+              {t("assignItem.back")}
             </Button>
             <Button loading={isPending} onClick={() => commitAssign(pending)}>
-              Confirm assign
+              {t("assignItem.confirmAssign")}
             </Button>
           </Group>
         </Stack>
@@ -137,15 +140,15 @@ const AssignItemModal = ({ onClose, data }: AssignItemModalProps) => {
           })}
         >
           <Text size="sm" c="dimmed" mb="sm">
-            Assigning{" "}
+            {t("assignItem.assigningPrefix")}{" "}
             <Text span fw={700} c="gold.4">
               {data.name}
             </Text>
-            . Pick who looted it.
+            {t("assignItem.assigningSuffix")}
           </Text>
           <MultiSelect
-            label="Player(s)"
-            placeholder="Select player(s)..."
+            label={t("assignItem.playersLabel")}
+            placeholder={t("assignItem.playersPlaceholder")}
             searchable
             data={playerOptions}
             data-autofocus
@@ -153,9 +156,9 @@ const AssignItemModal = ({ onClose, data }: AssignItemModalProps) => {
           />
           <Group mt="lg" justify="right" gap="xs">
             <Button variant="default" onClick={onClose}>
-              Cancel
+              {t("assignItem.cancel")}
             </Button>
-            <Button type="submit">Review</Button>
+            <Button type="submit">{t("assignItem.review")}</Button>
           </Group>
         </form>
       )}

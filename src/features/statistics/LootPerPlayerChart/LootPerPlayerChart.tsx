@@ -10,6 +10,7 @@ import {
 } from "recharts";
 import { Box, Modal, Select, Text, useMantineTheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { useTranslation } from "react-i18next";
 
 import LootPerPlayerTooltip from "../LootPerPlayerTooltip/LootPerPlayerTooltip";
 import ItemList from "../LootList/LootList";
@@ -20,6 +21,7 @@ interface LootPerPlayerChartProps {
 }
 
 const LootPerPlayerChart = ({ data }: LootPerPlayerChartProps) => {
+  const { t } = useTranslation();
   const theme = useMantineTheme();
   const [opened, { open, close }] = useDisclosure(false);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
@@ -36,7 +38,7 @@ const LootPerPlayerChart = ({ data }: LootPerPlayerChartProps) => {
 
   // Accessible, screen-reader-friendly summary of the visual chart.
   const chartSummary =
-    "Loot per player: " +
+    t("lootChart.summary") +
     data
       .map((p) => `${p.name} ${p.lootedCount}`)
       .join(", ");
@@ -51,7 +53,11 @@ const LootPerPlayerChart = ({ data }: LootPerPlayerChartProps) => {
             setSelectedPlayer(null);
           }}
           centered
-          title={<Text size="lg" fw="bold">{`${selectedPlayer?.name}'s Loot`}</Text>}
+          title={
+            <Text size="lg" fw="bold">
+              {t("lootChart.playersLoot", { name: selectedPlayer?.name })}
+            </Text>
+          }
         >
           <ItemList items={selectedPlayer.lootedItems} anchor />
         </Modal>
@@ -60,8 +66,8 @@ const LootPerPlayerChart = ({ data }: LootPerPlayerChartProps) => {
       {/* Keyboard- and screen-reader-accessible path to a player's loot history:
           the chart bars are mouse-only, so this Select is the equal-footing route. */}
       <Select
-        label="View a player's loot"
-        placeholder="Select a player…"
+        label={t("lootChart.selectLabel")}
+        placeholder={t("lootChart.selectPlaceholder")}
         searchable
         clearable
         mb="md"

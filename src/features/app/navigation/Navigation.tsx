@@ -2,6 +2,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { Divider, NavLink as Link, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
+import { useTranslation } from "react-i18next";
 import {
   IconChartBar,
   IconChevronRight,
@@ -16,17 +17,17 @@ import LoginModal from "../LoginModal/LoginModal";
 
 const LINKS = [
   {
-    label: "Welcome",
+    labelKey: "nav.welcome",
     url: "/welcome",
     icon: IconSparkles,
   },
   {
-    label: "Statistics",
+    labelKey: "nav.statistics",
     url: "/statistics",
     icon: IconChartBar,
   },
   {
-    label: "Loot Assigner",
+    labelKey: "nav.lootAssigner",
     url: "/loot-assigner",
     icon: IconDeviceIpadCheck,
   },
@@ -37,6 +38,7 @@ interface NavigationProps {
 }
 
 const Navigation = ({ onNavigate }: NavigationProps) => {
+  const { t } = useTranslation();
   const { isValid, logout } = useAuth();
   const location = useLocation();
   const [isOpen, { open, close }] = useDisclosure(false);
@@ -45,8 +47,8 @@ const Navigation = ({ onNavigate }: NavigationProps) => {
     logout();
     onNavigate?.();
     notifications.show({
-      title: "Signed out",
-      message: "You can no longer assign loot until you log back in.",
+      title: t("nav.signedOutTitle"),
+      message: t("nav.signedOutMessage"),
       color: "gold",
     });
   };
@@ -59,8 +61,8 @@ const Navigation = ({ onNavigate }: NavigationProps) => {
           <Link
             active={location.pathname === link.url}
             variant="light"
-            key={link.label}
-            label={link.label}
+            key={link.url}
+            label={t(link.labelKey)}
             to={link.url}
             rightSection={<IconChevronRight size={14} />}
             leftSection={<link.icon size={18} stroke={1.5} />}
@@ -72,7 +74,7 @@ const Navigation = ({ onNavigate }: NavigationProps) => {
         <Divider my="sm" />
 
         <Link
-          label={isValid ? "Logout" : "Login"}
+          label={isValid ? t("nav.logout") : t("nav.login")}
           c={isValid ? "red.5" : undefined}
           onClick={isValid ? handleLogout : open}
           leftSection={

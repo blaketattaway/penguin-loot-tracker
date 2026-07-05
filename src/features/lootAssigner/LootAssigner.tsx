@@ -31,8 +31,14 @@ import LoginModal from "../app/LoginModal/LoginModal";
 import AddPlayerModal from "./AddPlayerModal/AddPlayerModal";
 import AssignItemModal from "./AssignItemModal/AssignItemModal";
 
+import { useTranslation } from "react-i18next";
+
 import useAuth from "../../hooks/useAuth";
-import { useGetItemsMutation, WowheadItem } from "../../hooks/endpoints";
+import {
+  toBlizzardLocale,
+  useGetItemsMutation,
+  WowheadItem,
+} from "../../hooks/endpoints";
 
 const RESULTS_PER_PAGE = 15;
 
@@ -64,6 +70,8 @@ const EmptyState = ({
 );
 
 const LootAssigner = () => {
+  const { t, i18n } = useTranslation();
+  const locale = toBlizzardLocale(i18n.resolvedLanguage);
   const { isValid } = useAuth();
   const [assignItem, setAssignItem] = useState<WowheadItem | null>(null);
   const [filter, setFilter] = useState("");
@@ -92,6 +100,7 @@ const LootAssigner = () => {
       page: 1,
       pageCount: 10,
       querySearch: searchParams.get("search")!,
+      locale,
     });
 
   // A search fetches the full result set (up to 100) in one call, so filtering
@@ -102,8 +111,9 @@ const LootAssigner = () => {
       setClientPage(1);
       runSearch();
     }
+    // Re-run on locale change so results switch to the newly selected language.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
+  }, [searchParams, locale]);
 
   // Reset to the first page whenever the filter changes the result set.
   useEffect(() => {
@@ -133,8 +143,8 @@ const LootAssigner = () => {
       return (
         <EmptyState
           icon={<IconSwords size={30} />}
-          title="Search for an item to assign"
-          hint="Type an item's name above to look it up on Blizzard's database, then assign it to one or more players."
+          title={t("lootAssigner.empty.searchTitle")}
+          hint={t("lootAssigner.empty.searchHint")}
         />
       );
     }
@@ -143,8 +153,8 @@ const LootAssigner = () => {
         <EmptyState
           color="red"
           icon={<IconAlertTriangle size={30} />}
-          title="Search failed"
-          hint={`We couldn't reach Blizzard's item database to look up "${searchQuery}". This is a connection hiccup, not a spelling problem — try again.`}
+          title={t("lootAssigner.empty.errorTitle")}
+          hint={t("lootAssigner.empty.errorHint", { query: searchQuery })}
           action={
             <Button
               mt="xs"
@@ -154,7 +164,7 @@ const LootAssigner = () => {
               leftSection={<IconRefresh size={16} />}
               onClick={() => runSearch()}
             >
-              Retry
+              {t("lootAssigner.empty.retry")}
             </Button>
           }
         />
@@ -164,8 +174,8 @@ const LootAssigner = () => {
       return (
         <EmptyState
           icon={<IconSearchOff size={30} />}
-          title="No items found"
-          hint={`Nothing matched "${searchQuery}". Check the spelling or try a broader term.`}
+          title={t("lootAssigner.empty.noItemsTitle")}
+          hint={t("lootAssigner.empty.noItemsHint", { query: searchQuery })}
         />
       );
     }
@@ -173,8 +183,12 @@ const LootAssigner = () => {
       return (
         <EmptyState
           icon={<IconFilter size={30} />}
-          title="No matches"
-          hint={`None of the ${results.length} results for "${searchQuery}" contain "${filter}".`}
+          title={t("lootAssigner.empty.noMatchesTitle")}
+          hint={t("lootAssigner.empty.noMatchesHint", {
+            count: results.length,
+            query: searchQuery,
+            filter,
+          })}
           action={
             <Button
               mt="xs"
@@ -183,7 +197,7 @@ const LootAssigner = () => {
               size="xs"
               onClick={() => setFilter("")}
             >
-              Clear filter
+              {t("lootAssigner.clearFilter")}
             </Button>
           }
         />
@@ -214,9 +228,9 @@ const LootAssigner = () => {
       <Stack gap="lg" className="plt-enter">
         <Group justify="space-between" align="flex-start">
           <div>
-            <Title order={2}>Loot Assigner</Title>
+            <Title order={2}>{t("lootAssigner.title")}</Title>
             <Text c="dimmed" size="sm">
-              Look up an item and record who looted it.
+              {t("lootAssigner.subtitle")}
             </Text>
           </div>
           {isValid ? (
@@ -225,7 +239,7 @@ const LootAssigner = () => {
               variant="light"
               leftSection={<IconUserPlus size={18} />}
             >
-              Add Player
+              {t("lootAssigner.addPlayer")}
             </Button>
           ) : (
             <Button
@@ -233,14 +247,14 @@ const LootAssigner = () => {
               variant="light"
               leftSection={<IconLogin2 size={18} />}
             >
-              Login
+              {t("lootAssigner.login")}
             </Button>
           )}
         </Group>
 
         <Card>
           <Title order={5} mb="sm">
-            Search items
+            {t("lootAssigner.searchItems")}
           </Title>
           <LootSearcher
             onFormSubmit={(search) => {
@@ -256,13 +270,13 @@ const LootAssigner = () => {
               mb="md"
               value={filter}
               onChange={(e) => setFilter(e.currentTarget.value)}
-              placeholder="Filter these results (e.g. Will)"
+              placeholder={t("lootAssigner.filterPlaceholder")}
               leftSection={<IconFilter size={16} />}
               rightSection={
                 filter ? (
                   <CloseButton
                     size="sm"
-                    aria-label="Clear filter"
+                    aria-label={t("lootAssigner.clearFilter")}
                     onClick={() => setFilter("")}
                   />
                 ) : null

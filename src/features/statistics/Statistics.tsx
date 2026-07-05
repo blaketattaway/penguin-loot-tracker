@@ -19,8 +19,9 @@ import {
   IconRefresh,
   IconTrophy,
 } from "@tabler/icons-react";
+import { useTranslation } from "react-i18next";
 
-import { useGetPlayersQuery } from "../../hooks/endpoints";
+import { toBlizzardLocale, useGetPlayersQuery } from "../../hooks/endpoints";
 import LootPerPlayerChart from "./LootPerPlayerChart/LootPerPlayerChart";
 import PriorirtyTrackerTable from "./PriorirtyTrackerTable/PriorirtyTrackerTable";
 import StatCards from "./StatCards/StatCards";
@@ -46,7 +47,10 @@ const SectionCard = ({
 );
 
 const Statistics = () => {
-  const { data, status, refetch, isFetching } = useGetPlayersQuery();
+  const { t, i18n } = useTranslation();
+  const { data, status, refetch, isFetching } = useGetPlayersQuery(
+    toBlizzardLocale(i18n.resolvedLanguage)
+  );
 
   if (status === "pending") {
     return (
@@ -63,13 +67,10 @@ const Statistics = () => {
         color="red"
         radius="lg"
         icon={<IconAlertTriangle />}
-        title="Couldn't load the guild roster"
+        title={t("statistics.errorTitle")}
       >
         <Stack gap="sm" align="flex-start">
-          <Text size="sm">
-            We couldn't reach the loot vault. Check your connection and try
-            again.
-          </Text>
+          <Text size="sm">{t("statistics.errorMessage")}</Text>
           <Button
             variant="light"
             color="red"
@@ -78,7 +79,7 @@ const Statistics = () => {
             loading={isFetching}
             onClick={() => refetch()}
           >
-            Retry
+            {t("statistics.retry")}
           </Button>
         </Stack>
       </Alert>
@@ -90,9 +91,9 @@ const Statistics = () => {
   return (
     <Stack gap="lg" className="plt-enter">
       <div>
-        <Title order={2}>Statistics</Title>
+        <Title order={2}>{t("statistics.title")}</Title>
         <Text c="dimmed" size="sm">
-          Loot distribution and pickup priority across the guild.
+          {t("statistics.subtitle")}
         </Text>
       </div>
 
@@ -103,10 +104,9 @@ const Statistics = () => {
               <ThemeIcon variant="light" color="gray" size={56} radius="xl">
                 <IconMoodEmpty size={30} />
               </ThemeIcon>
-              <Text fw={700}>No players yet</Text>
+              <Text fw={700}>{t("statistics.emptyTitle")}</Text>
               <Text c="dimmed" size="sm" ta="center" maw={320}>
-                Add players from the Loot Assigner to start tracking who looted
-                what.
+                {t("statistics.emptyMessage")}
               </Text>
             </Stack>
           </Center>
@@ -116,12 +116,12 @@ const Statistics = () => {
           <StatCards data={data} />
           <Grid gutter="lg">
             <Grid.Col span={{ base: 12, lg: 7 }}>
-              <SectionCard title="Loot per player" icon={IconChartBar}>
+              <SectionCard title={t("statistics.lootPerPlayer")} icon={IconChartBar}>
                 <LootPerPlayerChart data={data} />
               </SectionCard>
             </Grid.Col>
             <Grid.Col span={{ base: 12, lg: 5 }}>
-              <SectionCard title="Priority tracker" icon={IconTrophy}>
+              <SectionCard title={t("statistics.priorityTracker")} icon={IconTrophy}>
                 <PriorirtyTrackerTable data={data} />
               </SectionCard>
             </Grid.Col>

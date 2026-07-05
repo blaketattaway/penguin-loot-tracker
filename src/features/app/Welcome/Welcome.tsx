@@ -17,6 +17,7 @@ import {
   IconDeviceIpadCheck,
   IconShieldLock,
 } from "@tabler/icons-react";
+import { useTranslation } from "react-i18next";
 
 import Logo from "../../../assets/penguin-logo.webp";
 
@@ -28,28 +29,24 @@ import Logo from "../../../assets/penguin-logo.webp";
  * guild mark plus ambient glow, no stock photography, no fake screenshots.
  */
 
-// Guild name lives in one place. If the guild spells it differently
-// (for example "Brootherhood"), change it here and it updates everywhere.
-const GUILD_NAME = "Penguin Brotherhood";
-
+// Feature cards: copy is translated at render time; only the icon, route, and
+// translation key live here.
 const FEATURES = [
   {
     icon: IconChartBar,
-    title: "See the whole picture",
-    body: "Loot distribution, priority tracking, and per-player history for every brother.",
+    key: "statistics",
     to: "/statistics",
-    cta: "View statistics",
   },
   {
     icon: IconDeviceIpadCheck,
-    title: "Assign loot in seconds",
-    body: "Search any item from Blizzard's catalog and hand it to the right raider.",
+    key: "assign",
     to: "/loot-assigner",
-    cta: "Assign loot",
   },
-];
+] as const;
 
 const Welcome = () => {
+  const { t } = useTranslation();
+
   return (
     <Container size="lg" py={{ base: "xl", md: 48 }}>
       {/* --- Hero: asymmetric split, brand visual on the right --- */}
@@ -63,7 +60,7 @@ const Welcome = () => {
               c="gold.4"
               style={{ letterSpacing: "0.14em" }}
             >
-              {GUILD_NAME}
+              {t("welcome.eyebrow")}
             </Text>
 
             <Title
@@ -72,15 +69,14 @@ const Welcome = () => {
               lh={1.05}
               fz={{ base: 34, sm: 44, md: 54 }}
             >
-              Every drop the Brotherhood earns,{" "}
+              {t("welcome.titleLead")}{" "}
               <Text span inherit c="gold.4">
-                tracked.
+                {t("welcome.titleHighlight")}
               </Text>
             </Title>
 
             <Text size="lg" c="dimmed" maw={"52ch"}>
-              Assign loot fairly, keep a clear record of who got what, and settle
-              priority without the raid-chat arguments.
+              {t("welcome.subtitle")}
             </Text>
 
             <Group gap="sm" mt="xs">
@@ -90,7 +86,7 @@ const Welcome = () => {
                 size="md"
                 rightSection={<IconArrowRight size={18} stroke={2} />}
               >
-                View statistics
+                {t("welcome.features.statistics.cta")}
               </Button>
               <Button
                 component={Link}
@@ -98,7 +94,7 @@ const Welcome = () => {
                 size="md"
                 variant="default"
               >
-                Assign loot
+                {t("welcome.features.assign.cta")}
               </Button>
             </Group>
           </Stack>
@@ -142,7 +138,7 @@ const Welcome = () => {
       {/* --- What you get: two real tools, not identical filler cards --- */}
       <Grid gutter="xl" className="plt-stagger">
         {FEATURES.map((feature) => (
-          <Grid.Col span={{ base: 12, sm: 6 }} key={feature.title}>
+          <Grid.Col span={{ base: 12, sm: 6 }} key={feature.key}>
             <Box
               className="plt-card-hover"
               style={{
@@ -163,10 +159,10 @@ const Welcome = () => {
                   <feature.icon size={26} stroke={1.5} />
                 </ThemeIcon>
                 <Title order={3} fw={800} fz={22}>
-                  {feature.title}
+                  {t(`welcome.features.${feature.key}.title`)}
                 </Title>
                 <Text c="dimmed" style={{ flex: 1 }}>
-                  {feature.body}
+                  {t(`welcome.features.${feature.key}.body`)}
                 </Text>
                 <Button
                   component={Link}
@@ -177,7 +173,7 @@ const Welcome = () => {
                   rightSection={<IconArrowRight size={16} stroke={2} />}
                   style={{ alignSelf: "flex-start" }}
                 >
-                  {feature.cta}
+                  {t(`welcome.features.${feature.key}.cta`)}
                 </Button>
               </Stack>
             </Box>
@@ -197,8 +193,7 @@ const Welcome = () => {
           <IconShieldLock size={16} stroke={1.5} />
         </ThemeIcon>
         <Text size="sm" ta="center">
-          Browsing is open to the whole Brotherhood. Assigning loot needs the
-          guild access code.
+          {t("welcome.accessNote")}
         </Text>
       </Group>
     </Container>

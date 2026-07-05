@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "./features/app/App";
 import ThemeProvider from "./theme/Theme";
 
+import "./i18n";
+
 import "@mantine/core/styles.css";
 import "@mantine/charts/styles.css";
 import "@mantine/notifications/styles.css";

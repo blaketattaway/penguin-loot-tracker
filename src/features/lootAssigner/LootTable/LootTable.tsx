@@ -1,7 +1,9 @@
 import { Anchor, Group, Pagination, Stack, Table, Button } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
+import { useTranslation } from "react-i18next";
 
 import useAuth from "../../../hooks/useAuth";
+import { wowheadData, wowheadUrl } from "../../../utils";
 
 import { WowheadItem } from "../../../hooks/endpoints";
 
@@ -20,6 +22,8 @@ const LootTable = ({
   onPageChange,
   onAssignItemClick,
 }: LootTableProps) => {
+  const { t, i18n } = useTranslation();
+  const lng = i18n.resolvedLanguage;
   const { isValid } = useAuth();
 
   const renderRows = () => {
@@ -27,8 +31,9 @@ const LootTable = ({
       <Table.Tr key={item.id}>
         <Table.Td>
           <Anchor
-            data-wowhead={`item=${item.id}`}
-            href={`https://www.wowhead.com/item=${item.id}`}
+            key={lng}
+            data-wowhead={wowheadData(item.id, lng)}
+            href={wowheadUrl(item.id, lng)}
             target="_blank"
           >
             {item.name}
@@ -42,7 +47,7 @@ const LootTable = ({
               leftSection={<IconPlus size={14} />}
               onClick={() => onAssignItemClick(item)}
             >
-              Assign
+              {t("lootTable.assign")}
             </Button>
           </Table.Td>
         )}
@@ -55,8 +60,8 @@ const LootTable = ({
       <Table striped highlightOnHover verticalSpacing="sm">
         <Table.Thead>
           <Table.Tr>
-            <Table.Th>Item</Table.Th>
-            {isValid && <Table.Th w={100}>Actions</Table.Th>}
+            <Table.Th>{t("lootTable.item")}</Table.Th>
+            {isValid && <Table.Th w={100}>{t("lootTable.actions")}</Table.Th>}
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>{renderRows()}</Table.Tbody>

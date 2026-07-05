@@ -6,10 +6,16 @@ export interface Item {
   name: string;
 }
 
+// Locales available on Blizzard's US API host (us.api.blizzard.com,
+// namespace=static-us). Spanish here is es_MX (Latin American); es_ES (Spain)
+// only exists on the EU host, so it's intentionally not an option.
+export type BlizzardLocale = "en_US" | "es_MX";
+
 export interface GetItemsPageConfig {
   page: number;
   pageCount: number;
   querySearch: string;
+  locale?: BlizzardLocale;
 }
 
 export interface AddPlayerResult {
@@ -28,9 +34,17 @@ export interface Login {
 
 export interface WowheadItem {
   id: number;
+  // Localized name for display, in the searched locale.
   name: string;
+  // Canonical English name — this is what we persist to our own backend so the
+  // stored data stays language-independent.
+  nameEn: string;
   url: string;
 }
+
+// Maps our UI language codes to Blizzard's US-host locales.
+export const toBlizzardLocale = (lng?: string): BlizzardLocale =>
+  lng?.toLowerCase().startsWith("es") ? "es_MX" : "en_US";
 
 export interface LootItemsTable {
   results: WowheadItem[];
@@ -60,18 +74,76 @@ const CLIENT_ID = "102260639990475c9acc9e4041468f54";
 const CLIENT_SECRET = "4ZWDYav5a1hT38pVnsLw4kBby0ci9Vct";
 const TOKEN_URL = "https://us.battle.net/oauth/token";
 
-export const useGetPlayersQuery = () => {
+// Our backend stores item names in English. Given a set of item ids, ask
+// Blizzard for their names in `locale` and return an id → localized-name map.
+// Uses the item search's `id` OR-filter (`id=1||2||3`), chunked to the API's
+// 100-results-per-page ceiling.
+const fetchLocalizedItemNames = async (
+  ids: number[],
+  locale: BlizzardLocale
+): Promise<Record<number, string>> => {
+  const uniqueIds = Array.from(new Set(ids));
+  if (uniqueIds.length === 0) return {};
+
+  const accessToken =
+    localStorage.getItem("wow-token") || (await getBlizzardToken());
+  const map: Record<number, string> = {};
+
+  const CHUNK_SIZE = 100;
+  for (let i = 0; i < uniqueIds.length; i += CHUNK_SIZE) {
+    const chunk = uniqueIds.slice(i, i + CHUNK_SIZE);
+    const url = `${WOWHEAD_API_URL}?namespace=static-us&id=${chunk.join(
+      "||"
+    )}&orderby=id&_pageSize=${CHUNK_SIZE}`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) continue; // Leave names untranslated rather than fail.
+
+    const data = await response.json();
+    for (const item of data.results ?? []) {
+      const name: Partial<Record<BlizzardLocale, string>> = item.data.name;
+      const localized = name[locale] ?? name.en_US;
+      if (localized) map[item.data.id] = localized;
+    }
+  }
+
+  return map;
+};
+
+export const useGetPlayersQuery = (locale: BlizzardLocale = "en_US") => {
   return useQuery({
-    queryKey: ["players"],
+    // Locale is part of the key so switching language refetches localized names.
+    queryKey: ["players", locale],
     queryFn: async (): Promise<Player[]> => {
       const response = await fetch(`${API_URL}/player/getplayers`);
       const result = await response.json();
 
-      return result.map((player: Player) => ({
+      const players: Player[] = result.map((player: Player) => ({
         id: player.id,
         name: player.name,
         lootedItems: player.lootedItems,
         lootedCount: player.lootedItems.length,
+      }));
+
+      // English is the stored language, so nothing to translate.
+      if (locale === "en_US") return players;
+
+      const allIds = players.flatMap((p) =>
+        p.lootedItems.map((item) => item.id)
+      );
+      const nameMap = await fetchLocalizedItemNames(allIds, locale);
+
+      return players.map((player) => ({
+        ...player,
+        lootedItems: player.lootedItems.map((item) => ({
+          ...item,
+          name: nameMap[item.id] ?? item.name,
+        })),
       }));
     },
   });
@@ -112,7 +184,10 @@ export const useGetItemsMutation = () => {
     mutationFn: async (search: GetItemsPageConfig): Promise<LootItemsTable> => {
       const accessToken =
         localStorage.getItem("wow-token") || (await getBlizzardToken());
-      const url = `${WOWHEAD_API_URL}?namespace=static-us&name.en_US=${encodeURIComponent(
+      // Search in and display item names in the requested locale. The user
+      // types in their own language, so we query the matching name field.
+      const locale: BlizzardLocale = search.locale ?? "en_US";
+      const url = `${WOWHEAD_API_URL}?namespace=static-us&name.${locale}=${encodeURIComponent(
         search.querySearch
       )}&orderby=id&_page=${search.page}&_pageSize=100`;
       const response = await fetch(url, {
@@ -130,11 +205,13 @@ export const useGetItemsMutation = () => {
         results: data.results.map(
           (item: {
             key: { href: string };
-            data: { id: number; name: { en_US: string } };
+            data: { id: number; name: Partial<Record<BlizzardLocale, string>> };
           }): WowheadItem => ({
             url: item.key.href,
             id: item.data.id,
-            name: item.data.name.en_US,
+            // Fall back to English if this item has no translation for the locale.
+            name: item.data.name[locale] ?? item.data.name.en_US ?? "",
+            nameEn: item.data.name.en_US ?? item.data.name[locale] ?? "",
           })
         ),
       };

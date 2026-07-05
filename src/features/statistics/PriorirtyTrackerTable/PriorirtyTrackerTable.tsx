@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Badge, Table, Text } from "@mantine/core";
+import { useTranslation } from "react-i18next";
 
 import { calculatePriority } from "../../../utils";
 import { Player } from "../../../hooks/endpoints";
@@ -9,6 +10,7 @@ interface PriorirtyTrackerTableProps {
 }
 
 const PriorirtyTrackerTable = ({ data }: PriorirtyTrackerTableProps) => {
+  const { t } = useTranslation();
   const playerPriorityEntries = useMemo(() => {
     if (data) return calculatePriority(data, (player) => player.lootedCount);
     return [];
@@ -42,7 +44,7 @@ const PriorirtyTrackerTable = ({ data }: PriorirtyTrackerTableProps) => {
   if (playerPriorityEntries.length === 0) {
     return (
       <Text c="dimmed" size="sm" py="md">
-        No priority data yet.
+        {t("priorityTable.empty")}
       </Text>
     );
   }
@@ -51,8 +53,8 @@ const PriorirtyTrackerTable = ({ data }: PriorirtyTrackerTableProps) => {
     <Table verticalSpacing="sm" highlightOnHover>
       <Table.Thead>
         <Table.Tr>
-          <Table.Th w={90}>Priority</Table.Th>
-          <Table.Th>Players</Table.Th>
+          <Table.Th w={90}>{t("priorityTable.priority")}</Table.Th>
+          <Table.Th>{t("priorityTable.players")}</Table.Th>
         </Table.Tr>
       </Table.Thead>
       <Table.Tbody>{renderRows()}</Table.Tbody>

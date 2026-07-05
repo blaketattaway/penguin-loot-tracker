@@ -1,0 +1,152 @@
+{
+  "app": {
+    "tagline": "Penguin Brotherhood",
+    "github": "GitHub",
+    "forTheGuild": "For the guild",
+    "openNavigation": "Open navigation",
+    "closeNavigation": "Close navigation",
+    "loading": "Preparing the loot vault…"
+  },
+  "language": {
+    "label": "Language",
+    "english": "English",
+    "spanish": "Español"
+  },
+  "nav": {
+    "welcome": "Welcome",
+    "statistics": "Statistics",
+    "lootAssigner": "Loot Assigner",
+    "login": "Login",
+    "logout": "Logout",
+    "signedOutTitle": "Signed out",
+    "signedOutMessage": "You can no longer assign loot until you log back in."
+  },
+  "welcome": {
+    "eyebrow": "Penguin Brotherhood",
+    "titleLead": "Every drop the Brotherhood earns,",
+    "titleHighlight": "tracked.",
+    "subtitle": "Assign loot fairly, keep a clear record of who got what, and settle priority without the raid-chat arguments.",
+    "features": {
+      "statistics": {
+        "title": "See the whole picture",
+        "body": "Loot distribution, priority tracking, and per-player history for every brother.",
+        "cta": "View statistics"
+      },
+      "assign": {
+        "title": "Assign loot in seconds",
+        "body": "Search any item from Blizzard's catalog and hand it to the right raider.",
+        "cta": "Assign loot"
+      }
+    },
+    "accessNote": "Browsing is open to the whole Brotherhood. Assigning loot needs the guild access code."
+  },
+  "login": {
+    "title": "Brotherhood access",
+    "subtitle": "Enter the Brotherhood's access code to unlock loot assignment.",
+    "accessCodeLabel": "Access code",
+    "accessCodePlaceholder": "Enter your code",
+    "passwordRequired": "Password is required",
+    "invalidAccessCode": "Invalid access code",
+    "cancel": "Cancel",
+    "unlock": "Unlock",
+    "successTitle": "Welcome back",
+    "successMessage": "You can now assign loot.",
+    "failedTitle": "Login failed",
+    "failedMessage": "That access code didn't work. Try again."
+  },
+  "lootAssigner": {
+    "title": "Loot Assigner",
+    "subtitle": "Look up an item and record who looted it.",
+    "addPlayer": "Add Player",
+    "login": "Login",
+    "searchItems": "Search items",
+    "filterPlaceholder": "Filter these results (e.g. Will)",
+    "clearFilter": "Clear filter",
+    "empty": {
+      "searchTitle": "Search for an item to assign",
+      "searchHint": "Type an item's name above to look it up on Blizzard's database, then assign it to one or more players.",
+      "errorTitle": "Search failed",
+      "errorHint": "We couldn't reach Blizzard's item database to look up \"{{query}}\". This is a connection hiccup, not a spelling problem — try again.",
+      "retry": "Retry",
+      "noItemsTitle": "No items found",
+      "noItemsHint": "Nothing matched \"{{query}}\". Check the spelling or try a broader term.",
+      "noMatchesTitle": "No matches",
+      "noMatchesHint": "None of the {{count}} results for \"{{query}}\" contain \"{{filter}}\"."
+    }
+  },
+  "lootSearcher": {
+    "placeholder": "e.g. Thunderfury, Blessed Blade...",
+    "search": "Search"
+  },
+  "lootTable": {
+    "item": "Item",
+    "actions": "Actions",
+    "assign": "Assign"
+  },
+  "addPlayer": {
+    "title": "Add player",
+    "description": "Add a character to the guild roster so they can receive loot.",
+    "nameLabel": "Player name",
+    "namePlaceholder": "Character name",
+    "nameRequired": "Player name is required",
+    "cancel": "Cancel",
+    "submit": "Add player",
+    "successTitle": "Player added",
+    "successMessage": "{{name}} joined the roster.",
+    "errorTitle": "Couldn't add player"
+  },
+  "assignItem": {
+    "title": "Assign item",
+    "selectAtLeastOne": "Select at least one player",
+    "confirmTitle": "Confirm this loot record",
+    "confirmWarning": "This can't be undone from the app. Double-check before recording.",
+    "recordingPrefix": "Recording",
+    "recordingSuffix": "as looted by:",
+    "back": "Back",
+    "confirmAssign": "Confirm assign",
+    "assigningPrefix": "Assigning",
+    "assigningSuffix": ". Pick who looted it.",
+    "playersLabel": "Player(s)",
+    "playersPlaceholder": "Select player(s)...",
+    "cancel": "Cancel",
+    "review": "Review",
+    "successTitle": "Loot assigned",
+    "errorTitle": "Couldn't assign loot"
+  },
+  "statistics": {
+    "title": "Statistics",
+    "subtitle": "Loot distribution and pickup priority across the guild.",
+    "errorTitle": "Couldn't load the guild roster",
+    "errorMessage": "We couldn't reach the loot vault. Check your connection and try again.",
+    "retry": "Retry",
+    "emptyTitle": "No players yet",
+    "emptyMessage": "Add players from the Loot Assigner to start tracking who looted what.",
+    "lootPerPlayer": "Loot per player",
+    "priorityTracker": "Priority tracker"
+  },
+  "statCards": {
+    "players": "Players",
+    "totalLoot": "Total loot",
+    "avgPerPlayer": "Avg per player",
+    "topLooter": "Top looter"
+  },
+  "lootList": {
+    "empty": "Nothing looted yet — the vault awaits."
+  },
+  "lootChart": {
+    "playersLoot": "{{name}}'s Loot",
+    "selectLabel": "View a player's loot",
+    "selectPlaceholder": "Select a player…",
+    "summary": "Loot per player: "
+  },
+  "lootTooltip": {
+    "playersLoot": "{{name}}'s Loot",
+    "totalLoot": "Total Loot",
+    "items": "Items"
+  },
+  "priorityTable": {
+    "empty": "No priority data yet.",
+    "priority": "Priority",
+    "players": "Players"
+  }
+}

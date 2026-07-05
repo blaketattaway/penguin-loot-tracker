@@ -1,6 +1,7 @@
 import { Button, Group, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconSearch } from "@tabler/icons-react";
+import { useTranslation } from "react-i18next";
 
 interface LootSearcherProps {
   onFormSubmit: (searchValue: string) => void;
@@ -8,6 +9,7 @@ interface LootSearcherProps {
 }
 
 const LootSearcher = ({ onFormSubmit, searchQuery }: LootSearcherProps) => {
+  const { t } = useTranslation();
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -25,12 +27,12 @@ const LootSearcher = ({ onFormSubmit, searchQuery }: LootSearcherProps) => {
         <TextInput
           key={form.key("searchValue")}
           style={{ flex: 1 }}
-          placeholder="e.g. Thunderfury, Blessed Blade..."
+          placeholder={t("lootSearcher.placeholder")}
           leftSection={<IconSearch size={18} />}
           {...form.getInputProps("searchValue", { type: "input" })}
         />
         <Button type="submit" leftSection={<IconSearch size={18} />}>
-          Search
+          {t("lootSearcher.search")}
         </Button>
       </Group>
     </form>

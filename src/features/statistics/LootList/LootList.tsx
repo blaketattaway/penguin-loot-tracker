@@ -1,6 +1,8 @@
 import { List, ThemeIcon, Anchor, Text } from "@mantine/core";
 import { IconStar } from "@tabler/icons-react";
+import { useTranslation } from "react-i18next";
 import { Item } from "../../../hooks/endpoints";
+import { wowheadData, wowheadUrl } from "../../../utils";
 
 
 interface ItemListProps {
@@ -9,6 +11,8 @@ interface ItemListProps {
 }
 
 const ItemList = ({ items, anchor }: ItemListProps) => {
+  const { t, i18n } = useTranslation();
+  const lng = i18n.resolvedLanguage;
   const uniqueItems = Array.from(new Set(items.map(item => item.id))).map(id => {
     return items.find(item => item.id === id)!;
   });
@@ -27,9 +31,10 @@ const ItemList = ({ items, anchor }: ItemListProps) => {
         <List.Item key={item.id}>
           {anchor ? (
             <Anchor
+              key={lng}
               target="_blank"
-              href={`https://www.wowhead.com/item=${item.id}`}
-              data-wowhead={`item=${item.id}`}
+              href={wowheadUrl(item.id, lng)}
+              data-wowhead={wowheadData(item.id, lng)}
             >
               {item.name}
             </Anchor>
@@ -40,7 +45,7 @@ const ItemList = ({ items, anchor }: ItemListProps) => {
       ))}
       {items.length === 0 && (
         <Text size="sm" c="dimmed">
-          Nothing looted yet — the vault awaits.
+          {t("lootList.empty")}
         </Text>
       )}
     </List>
