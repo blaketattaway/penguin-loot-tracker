@@ -32,7 +32,7 @@ const Brand = () => (
         {APP_NAME}
       </Title>
       <Text size="xs" c="dimmed" lh={1.1}>
-        Guild loot tracker
+        Penguin Brotherhood
       </Text>
     </Box>
   </Group>

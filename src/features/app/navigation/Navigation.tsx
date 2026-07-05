@@ -8,12 +8,18 @@ import {
   IconDeviceIpadCheck,
   IconLogin,
   IconLogout,
+  IconSparkles,
 } from "@tabler/icons-react";
 
 import useAuth from "../../../hooks/useAuth";
 import LoginModal from "../LoginModal/LoginModal";
 
 const LINKS = [
+  {
+    label: "Welcome",
+    url: "/welcome",
+    icon: IconSparkles,
+  },
   {
     label: "Statistics",
     url: "/statistics",
