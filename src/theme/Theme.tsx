@@ -24,7 +24,7 @@ const gold: MantineColorsTuple = [
 const night: MantineColorsTuple = [
   "#c9c7c3", // text
   "#a9a6a1",
-  "#8a8781", // dimmed
+  "#949189", // dimmed — lightened to clear WCAG AA (≈5:1 on card #232220)
   "#66635e",
   "#3b3934", // borders
   "#2c2b27", // hover surface

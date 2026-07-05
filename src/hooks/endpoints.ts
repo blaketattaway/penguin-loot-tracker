@@ -112,7 +112,9 @@ export const useGetItemsMutation = () => {
     mutationFn: async (search: GetItemsPageConfig): Promise<LootItemsTable> => {
       const accessToken =
         localStorage.getItem("wow-token") || (await getBlizzardToken());
-      const url = `${WOWHEAD_API_URL}?namespace=static-us&name.en_US=${search.querySearch}&orderby=id&_page=${search.page}&_pageSize=15`;
+      const url = `${WOWHEAD_API_URL}?namespace=static-us&name.en_US=${encodeURIComponent(
+        search.querySearch
+      )}&orderby=id&_page=${search.page}&_pageSize=100`;
       const response = await fetch(url, {
         method: "GET",
         headers: {

@@ -8,7 +8,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Modal, Text, useMantineTheme } from "@mantine/core";
+import { Box, Modal, Select, Text, useMantineTheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 import LootPerPlayerTooltip from "../LootPerPlayerTooltip/LootPerPlayerTooltip";
@@ -29,6 +29,18 @@ const LootPerPlayerChart = ({ data }: LootPerPlayerChartProps) => {
     open();
   };
 
+  const openPlayerById = (id: string | null) => {
+    const player = data.find((p) => (p.id ?? p.name) === id);
+    if (player) handleBarClick(player);
+  };
+
+  // Accessible, screen-reader-friendly summary of the visual chart.
+  const chartSummary =
+    "Loot per player: " +
+    data
+      .map((p) => `${p.name} ${p.lootedCount}`)
+      .join(", ");
+
   return (
     <>
       {selectedPlayer && (
@@ -39,12 +51,28 @@ const LootPerPlayerChart = ({ data }: LootPerPlayerChartProps) => {
             setSelectedPlayer(null);
           }}
           centered
-          title={<Text size="lg" fw="bold" >{`${selectedPlayer?.name}'s Loot`}</Text>}
+          title={<Text size="lg" fw="bold">{`${selectedPlayer?.name}'s Loot`}</Text>}
         >
           <ItemList items={selectedPlayer.lootedItems} anchor />
         </Modal>
       )}
-      <ResponsiveContainer width="100%" height={540}>
+
+      {/* Keyboard- and screen-reader-accessible path to a player's loot history:
+          the chart bars are mouse-only, so this Select is the equal-footing route. */}
+      <Select
+        label="View a player's loot"
+        placeholder="Select a player…"
+        searchable
+        clearable
+        mb="md"
+        value={null}
+        data={data.map((p) => ({ value: p.id ?? p.name, label: p.name }))}
+        onChange={openPlayerById}
+        comboboxProps={{ withinPortal: true }}
+      />
+
+      <Box role="img" aria-label={chartSummary}>
+        <ResponsiveContainer width="100%" height={540}>
         <BarChart
           onClick={(e) =>
             e?.activePayload && handleBarClick(e.activePayload[0].payload)
@@ -63,7 +91,7 @@ const LootPerPlayerChart = ({ data }: LootPerPlayerChartProps) => {
             type="number"
             domain={[0, "dataMax"]}
             allowDecimals={false}
-            tick={{ fontSize: 12, fill: theme.colors.gray[6] }}
+            tick={{ fontSize: 12, fill: theme.colors.gray[5] }}
             tickCount={data.length}
           />
           <YAxis
@@ -98,7 +126,8 @@ const LootPerPlayerChart = ({ data }: LootPerPlayerChartProps) => {
             activeBar={{ fill: theme.colors.gold[4] }}
           />
         </BarChart>
-      </ResponsiveContainer>
+        </ResponsiveContainer>
+      </Box>
     </>
   );
 };

@@ -7,14 +7,13 @@ const Router = () => {
   return (
     <Routes>
       <Route path="/statistics" element={<Statistics />} />
+      <Route path="/loot-assigner" element={<LootAssigner />} />
+      {/* Redirect the old misspelled route so existing bookmarks keep working. */}
       <Route
         path="/loot-asigner"
-        element={<LootAssigner />}
+        element={<Navigate to="/loot-assigner" replace />}
       />
-      <Route
-        path="*"
-        element={<Navigate to="/statistics" />}
-      />
+      <Route path="*" element={<Navigate to="/statistics" />} />
     </Routes>
   );
 };

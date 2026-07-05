@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import {
   Alert,
+  Button,
   Card,
   Center,
   Grid,
@@ -15,6 +16,7 @@ import {
   IconAlertTriangle,
   IconChartBar,
   IconMoodEmpty,
+  IconRefresh,
   IconTrophy,
 } from "@tabler/icons-react";
 
@@ -44,7 +46,7 @@ const SectionCard = ({
 );
 
 const Statistics = () => {
-  const { data, status, error } = useGetPlayersQuery();
+  const { data, status, refetch, isFetching } = useGetPlayersQuery();
 
   if (status === "pending") {
     return (
@@ -63,7 +65,22 @@ const Statistics = () => {
         icon={<IconAlertTriangle />}
         title="Couldn't load the guild roster"
       >
-        {error.name}: {error.message}
+        <Stack gap="sm" align="flex-start">
+          <Text size="sm">
+            We couldn't reach the loot vault. Check your connection and try
+            again.
+          </Text>
+          <Button
+            variant="light"
+            color="red"
+            size="xs"
+            leftSection={<IconRefresh size={16} />}
+            loading={isFetching}
+            onClick={() => refetch()}
+          >
+            Retry
+          </Button>
+        </Stack>
       </Alert>
     );
   }

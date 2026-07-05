@@ -9,13 +9,13 @@ interface PriorirtyTrackerTableProps {
 }
 
 const PriorirtyTrackerTable = ({ data }: PriorirtyTrackerTableProps) => {
-  const playersPriortyEntris = useMemo(() => {
+  const playerPriorityEntries = useMemo(() => {
     if (data) return calculatePriority(data, (player) => player.lootedCount);
     return [];
   }, [data]);
 
   const renderRows = () => {
-    return playersPriortyEntris.map((element) => (
+    return playerPriorityEntries.map((element) => (
       <Table.Tr key={element.priority}>
         <Table.Td>
           <Badge
@@ -28,10 +28,10 @@ const PriorirtyTrackerTable = ({ data }: PriorirtyTrackerTableProps) => {
           </Badge>
         </Table.Td>
         <Table.Td>
-          {element.items.map((item, index) => (
-            <span key={index}>
+          {element.items.map((player, index) => (
+            <span key={player.id ?? player.name}>
               {index > 0 && ", "}
-              {item.name}
+              {player.name}
             </span>
           ))}
         </Table.Td>
@@ -39,7 +39,7 @@ const PriorirtyTrackerTable = ({ data }: PriorirtyTrackerTableProps) => {
     ));
   };
 
-  if (playersPriortyEntris.length === 0) {
+  if (playerPriorityEntries.length === 0) {
     return (
       <Text c="dimmed" size="sm" py="md">
         No priority data yet.

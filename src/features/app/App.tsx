@@ -73,7 +73,12 @@ const App = () => {
       <AppShell.Header hiddenFrom="sm" px="md">
         <Group h="100%" justify="space-between">
           <Brand />
-          <Burger opened={mobileOpened} onClick={toggleMobile} size="sm" />
+          <Burger
+            opened={mobileOpened}
+            onClick={toggleMobile}
+            size="sm"
+            aria-label={mobileOpened ? "Close navigation" : "Open navigation"}
+          />
         </Group>
       </AppShell.Header>
 

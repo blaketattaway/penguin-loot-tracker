@@ -21,7 +21,7 @@ const LINKS = [
   },
   {
     label: "Loot Assigner",
-    url: "/loot-asigner",
+    url: "/loot-assigner",
     icon: IconDeviceIpadCheck,
   },
 ];

@@ -38,7 +38,11 @@ const ItemList = ({ items, anchor }: ItemListProps) => {
           )}
         </List.Item>
       ))}
-      {items.length === 0 && <Text size="sm">No items looted 🥺</Text>}
+      {items.length === 0 && (
+        <Text size="sm" c="dimmed">
+          Nothing looted yet — the vault awaits.
+        </Text>
+      )}
     </List>
   );
 };

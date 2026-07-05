@@ -28,7 +28,7 @@ const LootTable = ({
         <Table.Td>
           <Anchor
             data-wowhead={`item=${item.id}`}
-            href={item.url}
+            href={`https://www.wowhead.com/item=${item.id}`}
             target="_blank"
           >
             {item.name}
@@ -61,7 +61,7 @@ const LootTable = ({
         </Table.Thead>
         <Table.Tbody>{renderRows()}</Table.Tbody>
       </Table>
-      {page && (
+      {pageCount > 1 && (
         <Group justify="center">
           <Pagination total={pageCount} value={page} onChange={onPageChange} />
         </Group>
