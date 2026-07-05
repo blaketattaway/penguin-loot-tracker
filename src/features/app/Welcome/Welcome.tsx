@@ -169,9 +169,15 @@ const Welcome = () => {
                   to={feature.to}
                   variant="subtle"
                   color="gold"
-                  px={0}
+                  px="sm"
                   rightSection={<IconArrowRight size={16} stroke={2} />}
-                  style={{ alignSelf: "flex-start" }}
+                  // Real horizontal padding so the hover fill has breathing room,
+                  // pulled left by the same amount so the label stays flush with
+                  // the card's title and body text.
+                  style={{
+                    alignSelf: "flex-start",
+                    marginLeft: "calc(var(--mantine-spacing-sm) * -1)",
+                  }}
                 >
                   {t(`welcome.features.${feature.key}.cta`)}
                 </Button>
