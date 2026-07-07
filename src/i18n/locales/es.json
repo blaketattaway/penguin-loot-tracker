@@ -81,6 +81,8 @@
     "loginHint": "Inicia sesión con el código de la hermandad para vincular personajes.",
     "login": "Iniciar sesión",
     "searchPlaceholder": "Busca un jugador…",
+    "clearSearch": "Limpiar búsqueda",
+    "progress": "{{linked}} de {{total}} con personaje vinculado",
     "addCharacter": "Añadir personaje",
     "noCharacters": "Sin personajes vinculados aún",
     "charCount_one": "{{count}} personaje",

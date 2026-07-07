@@ -81,6 +81,8 @@
     "loginHint": "Log in with the guild code to link characters.",
     "login": "Login",
     "searchPlaceholder": "Find a player…",
+    "clearSearch": "Clear search",
+    "progress": "{{linked}} of {{total}} with a character linked",
     "addCharacter": "Add character",
     "noCharacters": "No characters linked yet",
     "charCount_one": "{{count}} character",

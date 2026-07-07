@@ -18,11 +18,6 @@
   }
 }
 
-/* Cards enter with a short, capped stagger (delay set inline per index). */
-.cardIn {
-  animation: plt-fade-up 440ms var(--ease-out) both;
-}
-
 /* Preview card: blur bridges the appear so it resolves into focus. */
 .preview {
   animation: preview-in 280ms var(--ease-out) both;
@@ -46,7 +41,6 @@
     transform: none;
     box-shadow: none;
   }
-  .cardIn,
   .preview {
     animation: none;
   }

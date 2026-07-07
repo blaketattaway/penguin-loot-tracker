@@ -7,6 +7,7 @@ import {
   Button,
   Card,
   Center,
+  CloseButton,
   Group,
   HoverCard,
   LoadingOverlay,
@@ -162,6 +163,16 @@ const CharacterLinker = () => {
       )
     : players;
 
+  // How many people already have at least one character linked — makes the
+  // "how much is left to populate" state visible during the one-time setup.
+  const linkedCount = useMemo(
+    () =>
+      players.filter(
+        (p) => p.id && (charsByPlayer.get(p.id)?.length ?? 0) > 0
+      ).length,
+    [players, charsByPlayer]
+  );
+
   const isLoading = playersLoading || charsLoading;
 
   return (
@@ -174,12 +185,20 @@ const CharacterLinker = () => {
         />
       )}
 
-      <Stack gap="lg">
-        <div className="plt-enter">
+      <Stack gap="lg" className="plt-enter">
+        <div>
           <Title order={2}>{t("characters.title")}</Title>
           <Text c="dimmed" size="sm">
             {t("characters.subtitle")}
           </Text>
+          {!isLoading && players.length > 0 && (
+            <Text c="dimmed" size="xs" mt={4}>
+              {t("characters.progress", {
+                linked: linkedCount,
+                total: players.length,
+              })}
+            </Text>
+          )}
         </div>
 
         {!isValid && (
@@ -206,7 +225,17 @@ const CharacterLinker = () => {
           value={filter}
           onChange={(e) => setFilter(e.currentTarget.value)}
           placeholder={t("characters.searchPlaceholder")}
+          aria-label={t("characters.searchPlaceholder")}
           leftSection={<IconSearch size={16} />}
+          rightSection={
+            filter ? (
+              <CloseButton
+                size="sm"
+                aria-label={t("characters.clearSearch")}
+                onClick={() => setFilter("")}
+              />
+            ) : null
+          }
           maw={360}
         />
 
@@ -234,16 +263,12 @@ const CharacterLinker = () => {
           )}
 
           <Stack gap="sm">
-            {filtered.map((player, index) => {
+            {filtered.map((player) => {
               const chars = player.id
                 ? charsByPlayer.get(player.id) ?? []
                 : [];
               return (
-                <Card
-                  key={player.id}
-                  className={styles.cardIn}
-                  style={{ animationDelay: `${Math.min(index, 12) * 45}ms` }}
-                >
+                <Card key={player.id}>
                   <Group justify="space-between" wrap="nowrap" align="flex-start">
                     <div style={{ minWidth: 0 }}>
                       <Group gap="xs" align="baseline">
