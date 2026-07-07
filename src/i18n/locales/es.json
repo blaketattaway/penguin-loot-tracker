@@ -88,7 +88,11 @@
     "emptyTitle": "Aún no hay jugadores",
     "emptyMessage": "Primero agrega jugadores desde Asignar botín, luego vincula sus personajes aquí.",
     "noMatchTitle": "Sin coincidencias",
-    "noMatchHint": "Ningún nombre de jugador contiene \"{{filter}}\"."
+    "noMatchHint": "Ningún nombre de jugador contiene \"{{filter}}\".",
+    "level": "Nivel {{level}}",
+    "horde": "Horda",
+    "alliance": "Alianza",
+    "noGuild": "Sin hermandad"
   },
   "linkChar": {
     "title": "Vincular personaje",
@@ -99,6 +103,8 @@
     "realmLabel": "Reino",
     "realmPlaceholder": "ej. Quel'Thalas",
     "realmRequired": "El reino es obligatorio",
+    "search": "Verificar en Blizzard",
+    "notFound": "No se encontró ese personaje. Revisa el nombre y el reino.",
     "cancel": "Cancelar",
     "submit": "Vincular",
     "successTitle": "Personaje vinculado",

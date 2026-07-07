@@ -88,7 +88,11 @@
     "emptyTitle": "No players yet",
     "emptyMessage": "Add players from the Loot Assigner first, then link their characters here.",
     "noMatchTitle": "No matches",
-    "noMatchHint": "No player name contains \"{{filter}}\"."
+    "noMatchHint": "No player name contains \"{{filter}}\".",
+    "level": "Level {{level}}",
+    "horde": "Horde",
+    "alliance": "Alliance",
+    "noGuild": "No guild"
   },
   "linkChar": {
     "title": "Link a character",
@@ -99,6 +103,8 @@
     "realmLabel": "Realm",
     "realmPlaceholder": "e.g. Quel'Thalas",
     "realmRequired": "Realm is required",
+    "search": "Verify on Blizzard",
+    "notFound": "That character couldn't be found. Check the name and realm.",
     "cancel": "Cancel",
     "submit": "Link character",
     "successTitle": "Character linked",

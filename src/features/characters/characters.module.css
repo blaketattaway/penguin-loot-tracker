@@ -1,0 +1,53 @@
+/* Character roster — craft touches (Emil Kowalski philosophy).
+   Reuses the global easing tokens and the plt-fade-up keyframe. */
+
+/* Chip: lifts and glows in its class color on hover. Class color arrives via
+   the inline --class-color custom property; falls back to loot gold. */
+.chip {
+  cursor: default;
+  transition: transform 160ms var(--ease-out), box-shadow 160ms var(--ease-out),
+    border-color 160ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .chip:hover {
+    transform: translateY(-2px);
+    border-color: var(--class-color, var(--mantine-color-gold-6));
+    box-shadow: 0 6px 16px -6px
+      color-mix(in srgb, var(--class-color, var(--mantine-color-gold-6)) 55%, transparent);
+  }
+}
+
+/* Cards enter with a short, capped stagger (delay set inline per index). */
+.cardIn {
+  animation: plt-fade-up 440ms var(--ease-out) both;
+}
+
+/* Preview card: blur bridges the appear so it resolves into focus. */
+.preview {
+  animation: preview-in 280ms var(--ease-out) both;
+}
+
+@keyframes preview-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(6px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  .cardIn,
+  .preview {
+    animation: none;
+  }
+}

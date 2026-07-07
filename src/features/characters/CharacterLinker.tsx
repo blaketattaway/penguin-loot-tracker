@@ -1,12 +1,14 @@
-import { ReactNode, useMemo, useState } from "react";
+import { CSSProperties, ReactNode, useMemo, useState } from "react";
 import {
   Alert,
+  Avatar,
   Badge,
   Box,
   Button,
   Card,
   Center,
   Group,
+  HoverCard,
   LoadingOverlay,
   Stack,
   Text,
@@ -32,6 +34,8 @@ import {
 } from "../../hooks/endpoints";
 import LoginModal from "../app/LoginModal/LoginModal";
 import LinkCharacterModal from "./LinkCharacterModal/LinkCharacterModal";
+import { classColor, factionColor } from "./wow";
+import styles from "./characters.module.css";
 
 const EmptyState = ({
   icon,
@@ -54,6 +58,76 @@ const EmptyState = ({
     </Stack>
   </Center>
 );
+
+// A character shown in the roster: avatar + name in class color, with an armory-style
+// hover card (level, race, class, faction). Degrades gracefully for legacy links
+// that predate Blizzard validation (no class/avatar snapshot).
+const CharacterChip = ({ c }: { c: GuildCharacter }) => {
+  const { t } = useTranslation();
+  const cls = classColor(c.classId);
+
+  return (
+    <HoverCard
+      width={260}
+      shadow="md"
+      openDelay={120}
+      closeDelay={80}
+      position="top"
+      withArrow
+    >
+      <HoverCard.Target>
+        <Badge
+          variant="default"
+          radius="sm"
+          size="lg"
+          tt="none"
+          fw={600}
+          className={styles.chip}
+          style={{ ["--class-color"]: cls } as CSSProperties}
+          leftSection={<Avatar src={c.avatarUrl} size={18} radius="xl" />}
+        >
+          <span style={{ color: cls }}>{c.name}</span>
+          <Text component="span" c="dimmed" fw={400}>
+            {" · "}
+            {c.realm}
+          </Text>
+        </Badge>
+      </HoverCard.Target>
+      <HoverCard.Dropdown>
+        <Group wrap="nowrap">
+          <Avatar src={c.avatarUrl} size={48} radius="md" />
+          <div style={{ minWidth: 0 }}>
+            <Text fw={800} style={{ color: cls }}>
+              {c.name}
+            </Text>
+            <Text size="xs" c="dimmed">
+              {c.realm}
+            </Text>
+          </div>
+        </Group>
+        {(c.level > 0 || c.className) && (
+          <Text size="sm" mt="xs">
+            {c.level > 0 ? t("characters.level", { level: c.level }) : ""}
+            {c.level > 0 && (c.race || c.className) ? " · " : ""}
+            {c.race} {c.className}
+          </Text>
+        )}
+        {c.faction && (
+          <Badge
+            mt="xs"
+            size="sm"
+            variant="filled"
+            style={{ backgroundColor: factionColor(c.faction) }}
+          >
+            {c.faction === "HORDE"
+              ? t("characters.horde")
+              : t("characters.alliance")}
+          </Badge>
+        )}
+      </HoverCard.Dropdown>
+    </HoverCard>
+  );
+};
 
 const CharacterLinker = () => {
   const { t } = useTranslation();
@@ -100,8 +174,8 @@ const CharacterLinker = () => {
         />
       )}
 
-      <Stack gap="lg" className="plt-enter">
-        <div>
+      <Stack gap="lg">
+        <div className="plt-enter">
           <Title order={2}>{t("characters.title")}</Title>
           <Text c="dimmed" size="sm">
             {t("characters.subtitle")}
@@ -160,12 +234,16 @@ const CharacterLinker = () => {
           )}
 
           <Stack gap="sm">
-            {filtered.map((player) => {
+            {filtered.map((player, index) => {
               const chars = player.id
                 ? charsByPlayer.get(player.id) ?? []
                 : [];
               return (
-                <Card key={player.id}>
+                <Card
+                  key={player.id}
+                  className={styles.cardIn}
+                  style={{ animationDelay: `${Math.min(index, 12) * 45}ms` }}
+                >
                   <Group justify="space-between" wrap="nowrap" align="flex-start">
                     <div style={{ minWidth: 0 }}>
                       <Group gap="xs" align="baseline">
@@ -182,20 +260,7 @@ const CharacterLinker = () => {
                           </Text>
                         ) : (
                           chars.map((c) => (
-                            <Badge
-                              key={`${c.name}-${c.realm}`}
-                              variant="default"
-                              radius="sm"
-                              size="lg"
-                              tt="none"
-                              fw={600}
-                            >
-                              {c.name}
-                              <Text component="span" c="dimmed" fw={400}>
-                                {" · "}
-                                {c.realm}
-                              </Text>
-                            </Badge>
+                            <CharacterChip key={`${c.name}-${c.realm}`} c={c} />
                           ))
                         )}
                       </Group>

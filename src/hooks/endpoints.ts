@@ -267,6 +267,13 @@ export interface GuildCharacter {
   playerName?: string;
   name: string;
   realm: string;
+  // Blizzard snapshot — powers the roster's class colors, avatars, and hover cards.
+  classId: number;
+  className?: string;
+  race?: string;
+  faction?: string;
+  level: number;
+  avatarUrl?: string;
 }
 
 export interface LinkCharacterInput {
@@ -274,6 +281,39 @@ export interface LinkCharacterInput {
   name: string;
   realm: string;
 }
+
+// Blizzard validation result used for the link preview.
+export interface CharacterProfile {
+  found: boolean;
+  message?: string;
+  name: string;
+  realm: string;
+  realmSlug?: string;
+  level: number;
+  classId: number;
+  className?: string;
+  race?: string;
+  faction?: string;
+  guild?: string;
+  avatarUrl?: string;
+}
+
+export const useLookupCharacterMutation = () => {
+  return useMutation({
+    mutationKey: ["lookupCharacter"],
+    mutationFn: async (input: {
+      name: string;
+      realm: string;
+    }): Promise<CharacterProfile> => {
+      const url = `${API_URL}/character/lookup?name=${encodeURIComponent(
+        input.name
+      )}&realm=${encodeURIComponent(input.realm)}`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`Error: ${response.status}`);
+      return await response.json();
+    },
+  });
+};
 
 // The character ↔ person map. A person (guild nickname) can have many characters
 // (main + alts); priority follows the person, so a roll from any of them resolves here.
