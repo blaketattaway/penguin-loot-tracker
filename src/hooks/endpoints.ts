@@ -262,6 +262,55 @@ export const useAddPlayerMutation = () => {
   });
 };
 
+export interface GuildCharacter {
+  playerId?: string;
+  playerName?: string;
+  name: string;
+  realm: string;
+}
+
+export interface LinkCharacterInput {
+  playerId: string;
+  name: string;
+  realm: string;
+}
+
+// The character ↔ person map. A person (guild nickname) can have many characters
+// (main + alts); priority follows the person, so a roll from any of them resolves here.
+export const useGetCharactersQuery = () => {
+  return useQuery({
+    queryKey: ["characters"],
+    queryFn: async (): Promise<GuildCharacter[]> => {
+      const response = await fetch(`${API_URL}/character/getcharacters`);
+      if (!response.ok) throw new Error(`Error: ${response.status}`);
+      return await response.json();
+    },
+  });
+};
+
+export const useLinkCharacterMutation = () => {
+  return useMutation({
+    mutationKey: ["linkCharacter"],
+    mutationFn: async (input: LinkCharacterInput): Promise<AddPlayerResult> => {
+      const url = `${API_URL}/character/link`;
+
+      const rHeaders = {
+        ...HEADERS,
+        Authorization: `Bearer ${localStorage.getItem("plt-token")}`,
+      };
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: rHeaders,
+        body: JSON.stringify(input),
+      });
+
+      if (!response.ok) throw new Error(`Error: ${response.status}`);
+      return await response.json();
+    },
+  });
+};
+
 export const useAssignItemMutation = () => {
   return useMutation({
     mutationKey: ["assignItem"],

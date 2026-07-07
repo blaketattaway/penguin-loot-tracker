@@ -10,6 +10,7 @@ import {
   IconLogin,
   IconLogout,
   IconSparkles,
+  IconUsers,
 } from "@tabler/icons-react";
 
 import useAuth from "../../../hooks/useAuth";
@@ -30,6 +31,11 @@ const LINKS = [
     labelKey: "nav.lootAssigner",
     url: "/loot-assigner",
     icon: IconDeviceIpadCheck,
+  },
+  {
+    labelKey: "nav.characters",
+    url: "/characters",
+    icon: IconUsers,
   },
 ];
 

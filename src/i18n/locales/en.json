@@ -16,6 +16,7 @@
     "welcome": "Welcome",
     "statistics": "Statistics",
     "lootAssigner": "Loot Assigner",
+    "characters": "Characters",
     "login": "Login",
     "logout": "Logout",
     "signedOutTitle": "Signed out",
@@ -73,6 +74,36 @@
       "noMatchesTitle": "No matches",
       "noMatchesHint": "None of the {{count}} results for \"{{query}}\" contain \"{{filter}}\"."
     }
+  },
+  "characters": {
+    "title": "Characters",
+    "subtitle": "Link each raider's characters — main and alts — to their guild name, so loot priority follows the person, not the character.",
+    "loginHint": "Log in with the guild code to link characters.",
+    "login": "Login",
+    "searchPlaceholder": "Find a player…",
+    "addCharacter": "Add character",
+    "noCharacters": "No characters linked yet",
+    "charCount_one": "{{count}} character",
+    "charCount_other": "{{count}} characters",
+    "emptyTitle": "No players yet",
+    "emptyMessage": "Add players from the Loot Assigner first, then link their characters here.",
+    "noMatchTitle": "No matches",
+    "noMatchHint": "No player name contains \"{{filter}}\"."
+  },
+  "linkChar": {
+    "title": "Link a character",
+    "description": "Tie a WoW character to {{player}}. Loot priority is counted across all of their characters.",
+    "nameLabel": "Character name",
+    "namePlaceholder": "e.g. Pinguinez",
+    "nameRequired": "Character name is required",
+    "realmLabel": "Realm",
+    "realmPlaceholder": "e.g. Quel'Thalas",
+    "realmRequired": "Realm is required",
+    "cancel": "Cancel",
+    "submit": "Link character",
+    "successTitle": "Character linked",
+    "successMessage": "{{character}} is now linked to {{player}}.",
+    "errorTitle": "Couldn't link character"
   },
   "lootSearcher": {
     "placeholder": "e.g. Thunderfury, Blessed Blade...",

@@ -16,6 +16,7 @@
     "welcome": "Inicio",
     "statistics": "Estadísticas",
     "lootAssigner": "Asignar botín",
+    "characters": "Personajes",
     "login": "Iniciar sesión",
     "logout": "Cerrar sesión",
     "signedOutTitle": "Sesión cerrada",
@@ -73,6 +74,36 @@
       "noMatchesTitle": "Sin coincidencias",
       "noMatchesHint": "Ninguno de los {{count}} resultados para \"{{query}}\" contiene \"{{filter}}\"."
     }
+  },
+  "characters": {
+    "title": "Personajes",
+    "subtitle": "Vincula los personajes de cada raider —main y alts— a su nombre de la hermandad, para que la prioridad de botín siga a la persona y no al personaje.",
+    "loginHint": "Inicia sesión con el código de la hermandad para vincular personajes.",
+    "login": "Iniciar sesión",
+    "searchPlaceholder": "Busca un jugador…",
+    "addCharacter": "Añadir personaje",
+    "noCharacters": "Sin personajes vinculados aún",
+    "charCount_one": "{{count}} personaje",
+    "charCount_other": "{{count}} personajes",
+    "emptyTitle": "Aún no hay jugadores",
+    "emptyMessage": "Primero agrega jugadores desde Asignar botín, luego vincula sus personajes aquí.",
+    "noMatchTitle": "Sin coincidencias",
+    "noMatchHint": "Ningún nombre de jugador contiene \"{{filter}}\"."
+  },
+  "linkChar": {
+    "title": "Vincular personaje",
+    "description": "Liga un personaje de WoW a {{player}}. La prioridad de botín se cuenta sobre todos sus personajes.",
+    "nameLabel": "Nombre del personaje",
+    "namePlaceholder": "ej. Pinguinez",
+    "nameRequired": "El nombre del personaje es obligatorio",
+    "realmLabel": "Reino",
+    "realmPlaceholder": "ej. Quel'Thalas",
+    "realmRequired": "El reino es obligatorio",
+    "cancel": "Cancelar",
+    "submit": "Vincular",
+    "successTitle": "Personaje vinculado",
+    "successMessage": "{{character}} quedó vinculado a {{player}}.",
+    "errorTitle": "No se pudo vincular el personaje"
   },
   "lootSearcher": {
     "placeholder": "ej. Thunderfury, Blessed Blade...",
