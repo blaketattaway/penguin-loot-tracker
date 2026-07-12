@@ -39,7 +39,6 @@ export interface WowheadItem {
   // Canonical English name — this is what we persist to our own backend so the
   // stored data stays language-independent.
   nameEn: string;
-  url: string;
 }
 
 // Maps our UI language codes to Blizzard's US-host locales.
@@ -69,15 +68,10 @@ const HEADERS: HeadersInit = {
   "Content-Type": "application/json",
 };
 const API_URL = "https://penguin-loot-tracker.azurewebsites.net/api";
-const WOWHEAD_API_URL = "https://us.api.blizzard.com/data/wow/search/item";
-const CLIENT_ID = "102260639990475c9acc9e4041468f54";
-const CLIENT_SECRET = "4ZWDYav5a1hT38pVnsLw4kBby0ci9Vct";
-const TOKEN_URL = "https://us.battle.net/oauth/token";
 
-// Our backend stores item names in English. Given a set of item ids, ask
-// Blizzard for their names in `locale` and return an id → localized-name map.
-// Uses the item search's `id` OR-filter (`id=1||2||3`), chunked to the API's
-// 100-results-per-page ceiling.
+// Our backend stores item names in English. Given a set of item ids, ask our own
+// API to resolve their names in `locale` and return an id → localized-name map.
+// The backend proxies Blizzard so the OAuth secret never reaches the client.
 const fetchLocalizedItemNames = async (
   ids: number[],
   locale: BlizzardLocale
@@ -85,32 +79,16 @@ const fetchLocalizedItemNames = async (
   const uniqueIds = Array.from(new Set(ids));
   if (uniqueIds.length === 0) return {};
 
-  const accessToken =
-    localStorage.getItem("wow-token") || (await getBlizzardToken());
+  const url = `${API_URL}/item/localize?ids=${uniqueIds.join(
+    ","
+  )}&locale=${locale}`;
+  const response = await fetch(url);
+  if (!response.ok) return {}; // Leave names untranslated rather than fail.
+
+  // Backend returns a { "<id>": "<localized name>" } object.
+  const data: Record<string, string> = await response.json();
   const map: Record<number, string> = {};
-
-  const CHUNK_SIZE = 100;
-  for (let i = 0; i < uniqueIds.length; i += CHUNK_SIZE) {
-    const chunk = uniqueIds.slice(i, i + CHUNK_SIZE);
-    const url = `${WOWHEAD_API_URL}?namespace=static-us&id=${chunk.join(
-      "||"
-    )}&orderby=id&_pageSize=${CHUNK_SIZE}`;
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-    });
-    if (!response.ok) continue; // Leave names untranslated rather than fail.
-
-    const data = await response.json();
-    for (const item of data.results ?? []) {
-      const name: Partial<Record<BlizzardLocale, string>> = item.data.name;
-      const localized = name[locale] ?? name.en_US;
-      if (localized) map[item.data.id] = localized;
-    }
-  }
+  for (const [id, name] of Object.entries(data)) map[Number(id)] = name;
 
   return map;
 };
@@ -149,74 +127,29 @@ export const useGetPlayersQuery = (locale: BlizzardLocale = "en_US") => {
   });
 };
 
-const getBlizzardToken = async () => {
-  const response = await fetch(TOKEN_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: new URLSearchParams({
-      grant_type: "client_credentials",
-      client_id: CLIENT_ID,
-      client_secret: CLIENT_SECRET,
-    }),
-  });
-
-  const data = await response.json();
-  return data.access_token;
-};
-
-export const useFetchBlizzardToken = () => {
-  return useQuery({
-    queryKey: ["token"],
-    queryFn: async () => {
-      const response = await getBlizzardToken();
-      localStorage.setItem("wow-token", response);
-
-      return response;
-    },
-  });
-};
-
 export const useGetItemsMutation = () => {
   return useMutation({
     mutationKey: ["items"],
     mutationFn: async (search: GetItemsPageConfig): Promise<LootItemsTable> => {
-      const accessToken =
-        localStorage.getItem("wow-token") || (await getBlizzardToken());
-      // Search in and display item names in the requested locale. The user
-      // types in their own language, so we query the matching name field.
+      // Item search is proxied by our backend (which holds the Blizzard secret and
+      // narrows Blizzard's broad leading-token matches by the full query). The user
+      // types in their own language, so we pass the matching locale.
       const locale: BlizzardLocale = search.locale ?? "en_US";
-      const url = `${WOWHEAD_API_URL}?namespace=static-us&name.${locale}=${encodeURIComponent(
+      const url = `${API_URL}/item/search?query=${encodeURIComponent(
         search.querySearch
-      )}&orderby=id&_page=${search.page}&_pageSize=100`;
-      const response = await fetch(url, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-      });
+      )}&locale=${locale}&limit=100`;
+      const response = await fetch(url);
 
       if (!response.ok) throw new Error(`Error: ${response.status}`);
-      const data = await response.json();
-      const result: LootItemsTable = {
-        ...data,
-        results: data.results.map(
-          (item: {
-            key: { href: string };
-            data: { id: number; name: Partial<Record<BlizzardLocale, string>> };
-          }): WowheadItem => ({
-            url: item.key.href,
-            id: item.data.id,
-            // Fall back to English if this item has no translation for the locale.
-            name: item.data.name[locale] ?? item.data.name.en_US ?? "",
-            nameEn: item.data.name.en_US ?? item.data.name[locale] ?? "",
-          })
-        ),
-      };
+      // Backend returns WowheadItem[] ({ id, name, nameEn }) already localized.
+      const results: WowheadItem[] = await response.json();
 
-      return result;
+      return {
+        results,
+        page: search.page,
+        pageSize: 100,
+        pageCount: search.pageCount,
+      };
     },
   });
 };

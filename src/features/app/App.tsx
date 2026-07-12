@@ -5,10 +5,7 @@ import {
   Badge,
   Box,
   Burger,
-  Center,
   Group,
-  Loader,
-  Stack,
   Text,
   Title,
 } from "@mantine/core";
@@ -21,8 +18,6 @@ import Logo from "../../assets/penguin-logo.webp";
 import Router from "./router/Router";
 import Navigation from "./navigation/Navigation";
 import LanguageSwitcher from "./LanguageSwitcher/LanguageSwitcher";
-
-import { useFetchBlizzardToken } from "../../hooks/endpoints";
 
 const APP_NAME: string = "Penguin Loot Tracker";
 
@@ -45,26 +40,11 @@ const Brand = () => {
 
 const App = () => {
   const { t } = useTranslation();
-  const { status } = useFetchBlizzardToken();
   const [mobileOpened, { toggle: toggleMobile, close: closeMobile }] =
     useDisclosure(false);
   const isDesktop = useMediaQuery("(min-width: 48em)", false, {
     getInitialValueInEffect: false,
   });
-
-  if (status === "pending") {
-    return (
-      <Center h="100vh">
-        <Stack align="center" gap="lg" className="plt-enter">
-          <Avatar src={Logo} alt="logo" size={72} radius="md" />
-          <Loader color="gold" type="bars" />
-          <Text c="dimmed" size="sm">
-            {t("app.loading")}
-          </Text>
-        </Stack>
-      </Center>
-    );
-  }
 
   return (
     <AppShell
