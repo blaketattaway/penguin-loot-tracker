@@ -14,6 +14,7 @@ import "@mantine/notifications/styles.css";
 import "./theme/global.css";
 
 import { AuthProvider } from "./context/AuthContext";
+import { PartyAccessProvider } from "./context/PartyAccessContext";
 
 const queryClient = new QueryClient();
 
@@ -22,9 +23,11 @@ createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <HashRouter>
         <AuthProvider>
-          <ThemeProvider>
-            <App />
-          </ThemeProvider>
+          <PartyAccessProvider>
+            <ThemeProvider>
+              <App />
+            </ThemeProvider>
+          </PartyAccessProvider>
         </AuthProvider>
       </HashRouter>
     </QueryClientProvider>
