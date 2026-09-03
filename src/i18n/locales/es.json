@@ -20,7 +20,9 @@
     "login": "Iniciar sesión",
     "logout": "Cerrar sesión",
     "signedOutTitle": "Sesión cerrada",
-    "signedOutMessage": "Ya no puedes asignar botín hasta que vuelvas a iniciar sesión."
+    "signedOutMessage": "Ya no puedes asignar botín hasta que vuelvas a iniciar sesión.",
+    "party": "Fiestas",
+    "partyLocked": "Fiestas (requiere código)"
   },
   "welcome": {
     "eyebrow": "Penguin Brotherhood",
@@ -187,5 +189,94 @@
     "empty": "Aún no hay datos de prioridad.",
     "priority": "Prioridad",
     "players": "Jugadores"
+  },
+  "party": {
+    "eyebrow": "Penguin Brotherhood",
+    "title": "Penguin Party Tracker",
+    "subtitle": "Dónde se armó cada fiesta de la hermandad, quién fue, qué pet le tocó y las historias que quedaron.",
+    "lock": "Bloquear sección",
+    "editions": "Ediciones",
+    "errorTitle": "No pudimos traer las fiestas",
+    "errorExpired": "Tu código ya no es válido o expiró. Volvé a ingresarlo.",
+    "errorServer": "El servidor respondió {{status}}. No es tu código: volvé a intentar en un momento.",
+    "errorNetwork": "No pudimos contactar al servidor. Revisá tu conexión y volvé a intentar.",
+    "errorReenter": "Ingresar el código de nuevo",
+    "emptyTitle": "Todavía no hay ninguna edición cargada",
+    "emptyBody": "En cuanto se cargue la primera fiesta, va a aparecer acá con su pin en el mapa.",
+    "map": {
+      "pinLabel": "Penguin Party {{year}}, en {{city}}"
+    },
+    "gate": {
+      "eyebrow": "Solo para la hermandad",
+      "title": "Penguin Party Tracker",
+      "subtitle": "Las fotos y las historias de las fiestas viven acá. Ingresá el código de la hermandad para entrar.",
+      "codeLabel": "Código de la fiesta",
+      "codePlaceholder": "Ingresá el código",
+      "unlock": "Entrar a la fiesta",
+      "required": "El código es obligatorio",
+      "invalid": "Ese código no es",
+      "hint": "Es el mismo código para todos. Si no lo tenés, pedíselo a alguien de la guild.",
+      "successTitle": "Bienvenido a la fiesta",
+      "successMessage": "Ya podés ver las fotos y las historias de cada edición."
+    },
+    "edition": {
+      "fallbackTitle": "Penguin Party {{year}}",
+      "upcoming": "Próxima edición"
+    },
+    "loot": {
+      "title": "Sorteo de pets",
+      "subtitle": "Una TCG Loot Card por asistente, sorteada en la fiesta.",
+      "disclaimer": "Este botín es de la fiesta: no cuenta para las estadísticas ni para la prioridad de la raid.",
+      "attendee": "Asistente",
+      "pet": "Pet",
+      "noPet": "Sin pet",
+      "organizerPet": "Compró las pets",
+      "organizerTooltip": "Organiza el evento y compra las pets para sortearlas",
+      "attendeeCount_one": "{{count}} asistente",
+      "attendeeCount_other": "{{count}} asistentes",
+      "petCount_one": "{{count}} pet sorteada",
+      "petCount_other": "{{count}} pets sorteadas"
+    },
+    "gags": {
+      "title": "Momentos de la fiesta",
+      "subtitle": "Lo que pasó ese año y quedó para el recuerdo.",
+      "setIcon": "Cambiar ícono",
+      "uploading": "Subiendo…",
+      "iconSetTitle": "Ícono actualizado",
+      "iconSetMessage": "Ya se ve en la tarjeta.",
+      "iconFailedTitle": "No se pudo subir el ícono",
+      "iconFailedMessage": "Probá de nuevo en un momento."
+    },
+    "gallery": {
+      "title": "Fotos",
+      "subtitle": "La galería de esta edición.",
+      "count_one": "{{count}} foto",
+      "count_other": "{{count}} fotos",
+      "emptyTitle": "Todavía no hay fotos",
+      "emptyBody": "Cuando El Patrón las suba, van a aparecer acá.",
+      "emptyOfficer": "Subí las primeras con el botón de arriba.",
+      "open": "Abrir la foto {{index}}",
+      "photoAlt": "Foto de la fiesta",
+      "counter": "{{current}} de {{total}}",
+      "previous": "Foto anterior",
+      "next": "Foto siguiente",
+      "delete": "Eliminar foto",
+      "deleteTitle": "¿Eliminar esta foto?",
+      "deleteBody": "Se borra del álbum y del storage. No hay forma de recuperarla.",
+      "deleteConfirm": "Eliminar",
+      "deletedTitle": "Foto eliminada",
+      "deletedMessage": "Ya no está en el álbum.",
+      "deleteFailedTitle": "No se pudo eliminar",
+      "deleteFailedMessage": "Probá de nuevo en un momento."
+    },
+    "upload": {
+      "cta": "Subir fotos",
+      "progress": "{{done}} de {{total}}",
+      "successTitle": "Fotos subidas",
+      "successMessage_one": "Se subió {{count}} foto.",
+      "successMessage_other": "Se subieron {{count}} fotos.",
+      "partialTitle": "Algunas fotos no subieron",
+      "partialMessage": "Se subieron {{count}} de {{total}}."
+    }
   }
 }

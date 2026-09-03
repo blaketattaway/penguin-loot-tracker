@@ -20,7 +20,9 @@
     "login": "Login",
     "logout": "Logout",
     "signedOutTitle": "Signed out",
-    "signedOutMessage": "You can no longer assign loot until you log back in."
+    "signedOutMessage": "You can no longer assign loot until you log back in.",
+    "party": "Parties",
+    "partyLocked": "Parties (code required)"
   },
   "welcome": {
     "eyebrow": "Penguin Brotherhood",
@@ -187,5 +189,94 @@
     "empty": "No priority data yet.",
     "priority": "Priority",
     "players": "Players"
+  },
+  "party": {
+    "eyebrow": "Penguin Brotherhood",
+    "title": "Penguin Party Tracker",
+    "subtitle": "Where the guild has partied, who showed up, which pet they drew, and the stories that stuck.",
+    "lock": "Lock section",
+    "editions": "Editions",
+    "errorTitle": "We could not load the parties",
+    "errorExpired": "Your code is no longer valid or has expired. Enter it again.",
+    "errorServer": "The server answered {{status}}. This isn't your code — try again in a moment.",
+    "errorNetwork": "We couldn't reach the server. Check your connection and try again.",
+    "errorReenter": "Enter the code again",
+    "emptyTitle": "No edition has been added yet",
+    "emptyBody": "As soon as the first party is loaded it will show up here, pin and all.",
+    "map": {
+      "pinLabel": "Penguin Party {{year}}, in {{city}}"
+    },
+    "gate": {
+      "eyebrow": "Guild only",
+      "title": "Penguin Party Tracker",
+      "subtitle": "The photos and the stories from the parties live here. Enter the guild code to come in.",
+      "codeLabel": "Party code",
+      "codePlaceholder": "Enter the code",
+      "unlock": "Join the party",
+      "required": "The code is required",
+      "invalid": "That is not the code",
+      "hint": "It is the same code for everyone. If you do not have it, ask someone in the guild.",
+      "successTitle": "Welcome to the party",
+      "successMessage": "You can now see the photos and stories from every edition."
+    },
+    "edition": {
+      "fallbackTitle": "Penguin Party {{year}}",
+      "upcoming": "Next edition"
+    },
+    "loot": {
+      "title": "Pet raffle",
+      "subtitle": "One TCG Loot Card per guest, drawn at the party.",
+      "disclaimer": "This loot belongs to the party: it does not count towards raid statistics or priority.",
+      "attendee": "Guest",
+      "pet": "Pet",
+      "noPet": "No pet",
+      "organizerPet": "Bought the pets",
+      "organizerTooltip": "Runs the event and buys the pets to raffle off",
+      "attendeeCount_one": "{{count}} guest",
+      "attendeeCount_other": "{{count}} guests",
+      "petCount_one": "{{count}} pet raffled",
+      "petCount_other": "{{count}} pets raffled"
+    },
+    "gags": {
+      "title": "Moments of the night",
+      "subtitle": "What happened that year and never got lived down.",
+      "setIcon": "Change icon",
+      "uploading": "Uploading…",
+      "iconSetTitle": "Icon updated",
+      "iconSetMessage": "It is on the card now.",
+      "iconFailedTitle": "Could not upload the icon",
+      "iconFailedMessage": "Try again in a moment."
+    },
+    "gallery": {
+      "title": "Photos",
+      "subtitle": "This edition's gallery.",
+      "count_one": "{{count}} photo",
+      "count_other": "{{count}} photos",
+      "emptyTitle": "No photos yet",
+      "emptyBody": "They will show up here once El Patrón uploads them.",
+      "emptyOfficer": "Upload the first ones with the button above.",
+      "open": "Open photo {{index}}",
+      "photoAlt": "Party photo",
+      "counter": "{{current}} of {{total}}",
+      "previous": "Previous photo",
+      "next": "Next photo",
+      "delete": "Delete photo",
+      "deleteTitle": "Delete this photo?",
+      "deleteBody": "It is removed from the album and from storage. There is no way to get it back.",
+      "deleteConfirm": "Delete",
+      "deletedTitle": "Photo deleted",
+      "deletedMessage": "It is out of the album.",
+      "deleteFailedTitle": "Could not delete it",
+      "deleteFailedMessage": "Try again in a moment."
+    },
+    "upload": {
+      "cta": "Upload photos",
+      "progress": "{{done}} of {{total}}",
+      "successTitle": "Photos uploaded",
+      "successMessage_one": "{{count}} photo uploaded.",
+      "successMessage_other": "{{count}} photos uploaded.",
+      "partialTitle": "Some photos did not upload",
+      "partialMessage": "{{count}} of {{total}} uploaded."
+    }
   }
 }

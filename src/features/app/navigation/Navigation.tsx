@@ -6,7 +6,9 @@ import { useTranslation } from "react-i18next";
 import {
   IconChartBar,
   IconChevronRight,
+  IconConfetti,
   IconDeviceIpadCheck,
+  IconLock,
   IconLogin,
   IconLogout,
   IconSparkles,
@@ -14,6 +16,7 @@ import {
 } from "@tabler/icons-react";
 
 import useAuth from "../../../hooks/useAuth";
+import { usePartyVisibility } from "../../../hooks/usePartyAccess";
 import LoginModal from "../LoginModal/LoginModal";
 
 const LINKS = [
@@ -39,6 +42,16 @@ const LINKS = [
   },
 ];
 
+// The party section sits apart from LINKS because it is the only entry with two
+// states. It is always listed — hiding it bought no security (the API serves
+// nothing without the code either way) and cost every non-officer a link they
+// had to be sent. What it shows instead is a padlock until this browser has
+// access, and clicking it leads to the code screen rather than to the album.
+const PARTY_LINK = {
+  labelKey: "nav.party",
+  url: "/party",
+};
+
 interface NavigationProps {
   onNavigate?: () => void;
 }
@@ -46,6 +59,7 @@ interface NavigationProps {
 const Navigation = ({ onNavigate }: NavigationProps) => {
   const { t } = useTranslation();
   const { isValid, logout } = useAuth();
+  const { canView: canViewParty } = usePartyVisibility();
   const location = useLocation();
   const [isOpen, { open, close }] = useDisclosure(false);
 
@@ -76,6 +90,26 @@ const Navigation = ({ onNavigate }: NavigationProps) => {
             onClick={onNavigate}
           />
         ))}
+
+        <Link
+          active={location.pathname.startsWith(PARTY_LINK.url)}
+          variant="light"
+          label={t(PARTY_LINK.labelKey)}
+          to={PARTY_LINK.url}
+          rightSection={<IconChevronRight size={14} />}
+          leftSection={
+            canViewParty ? (
+              <IconConfetti size={18} stroke={1.5} />
+            ) : (
+              <IconLock size={18} stroke={1.5} />
+            )
+          }
+          // The padlock carries the state visually; this spells it out for
+          // anyone on a screen reader, who would otherwise just hear "Fiestas".
+          aria-label={canViewParty ? undefined : t("nav.partyLocked")}
+          component={NavLink}
+          onClick={onNavigate}
+        />
 
         <Divider my="sm" />
 
